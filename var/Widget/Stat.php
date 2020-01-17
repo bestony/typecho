@@ -1,5 +1,7 @@
 <?php
-if (!defined('__TYPECHO_ROOT_DIR__')) exit;
+if (!defined('__TYPECHO_ROOT_DIR__')) {
+    exit;
+}
 /**
  * 全局统计
  *
@@ -45,7 +47,7 @@ class Widget_Stat extends Typecho_Widget
      * @param mixed $params 参数列表
      * @return void
      */
-    public function __construct($request, $response, $params = NULL)
+    public function __construct($request, $response, $params = null)
     {
         parent::__construct($request, $response, $params);
 
@@ -361,12 +363,12 @@ class Widget_Stat extends Typecho_Widget
                     ->where('table.metas.type = ?', 'category'))->num;
     }
     
-     /**
-     * 获取标签数目
-     *
-     * @access protected
-     * @return integer
-     */
+    /**
+    * 获取标签数目
+    *
+    * @access protected
+    * @return integer
+    */
     protected function ___tagsNum()
     {
         return $this->db->fetchObject($this->db->select(array('COUNT(mid)' => 'num'))

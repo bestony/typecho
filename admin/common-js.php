@@ -1,4 +1,6 @@
-<?php if(!defined('__TYPECHO_ADMIN__')) exit; ?>
+<?php if (!defined('__TYPECHO_ADMIN__')) {
+    exit;
+} ?>
 <script src="<?php $options->adminStaticUrl('js', 'jquery.js?v=' . $suffixVersion); ?>"></script>
 <script src="<?php $options->adminStaticUrl('js', 'jquery-ui.js?v=' . $suffixVersion); ?>"></script>
 <script src="<?php $options->adminStaticUrl('js', 'typecho.js?v=' . $suffixVersion); ?>"></script>

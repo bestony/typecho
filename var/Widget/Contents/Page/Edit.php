@@ -1,5 +1,7 @@
 <?php
-if (!defined('__TYPECHO_ROOT_DIR__')) exit;
+if (!defined('__TYPECHO_ROOT_DIR__')) {
+    exit;
+}
 /**
  * 编辑页面
  *
@@ -22,8 +24,8 @@ if (!defined('__TYPECHO_ROOT_DIR__')) exit;
 class Widget_Contents_Page_Edit extends Widget_Contents_Post_Edit implements Widget_Interface_Do
 {
     /**
-     * 自定义字段的hook名称 
-     * 
+     * 自定义字段的hook名称
+     *
      * @var string
      * @access protected
      */
@@ -41,7 +43,7 @@ class Widget_Contents_Page_Edit extends Widget_Contents_Post_Edit implements Wid
         $this->user->pass('editor');
 
         /** 获取文章内容 */
-        if (!empty($this->request->cid) && 'delete' != $this->request->do 
+        if (!empty($this->request->cid) && 'delete' != $this->request->do
             && 'sort' != $this->request->do) {
             $this->db->fetchRow($this->select()
             ->where('table.contents.type = ? OR table.contents.type = ?', 'page', 'page_draft')
@@ -54,7 +56,7 @@ class Widget_Contents_Page_Edit extends Widget_Contents_Post_Edit implements Wid
 
             if (!$this->have()) {
                 throw new Typecho_Widget_Exception(_t('页面不存在'), 404);
-            } else if ($this->have() && !$this->allow('edit')) {
+            } elseif ($this->have() && !$this->allow('edit')) {
                 throw new Typecho_Widget_Exception(_t('没有编辑权限'), 403);
             }
         }
@@ -68,8 +70,16 @@ class Widget_Contents_Page_Edit extends Widget_Contents_Post_Edit implements Wid
      */
     public function writePage()
     {
-        $contents = $this->request->from('text', 'template', 'allowComment',
-            'allowPing', 'allowFeed', 'slug', 'order', 'visibility');
+        $contents = $this->request->from(
+            'text',
+            'template',
+            'allowComment',
+            'allowPing',
+            'allowFeed',
+            'slug',
+            'order',
+            'visibility'
+        );
 
         $contents['title'] = $this->request->get('title', _t('未命名页面'));
         $contents['created'] = $this->getCreated();
@@ -81,7 +91,7 @@ class Widget_Contents_Page_Edit extends Widget_Contents_Post_Edit implements Wid
 
         $contents = $this->pluginHandle()->write($contents, $this);
 
-        if ($this->request->is('do=publish')) { 
+        if ($this->request->is('do=publish')) {
             /** 重新发布已经存在的文章 */
             $contents['type'] = 'page';
             $this->publish($contents);
@@ -148,7 +158,7 @@ class Widget_Contents_Page_Edit extends Widget_Contents_Post_Edit implements Wid
         }
 
         $pages = $this->request->filter('int')->getArray('cid');
-        $markCount = 0; 
+        $markCount = 0;
 
         foreach ($pages as $page) {
             // 标记插件接口
@@ -159,8 +169,11 @@ class Widget_Contents_Page_Edit extends Widget_Contents_Post_Edit implements Wid
                 // 处理草稿
                 $draft = $this->db->fetchRow($this->db->select('cid')
                     ->from('table.contents')
-                    ->where('table.contents.parent = ? AND table.contents.type = ?',
-                        $page, 'page_draft')
+                    ->where(
+                        'table.contents.parent = ? AND table.contents.type = ?',
+                        $page,
+                        'page_draft'
+                    )
                 ->limit(1));
 
                 if (!empty($draft)) {
@@ -178,8 +191,10 @@ class Widget_Contents_Page_Edit extends Widget_Contents_Post_Edit implements Wid
         }
 
         /** 设置提示信息 */
-        $this->widget('Widget_Notice')->set($markCount > 0 ? _t('页面已经被标记为<strong>%s</strong>', $statusList[$status]) : _t('没有页面被标记'),
-        $deleteCount > 0 ? 'success' : 'notice');
+        $this->widget('Widget_Notice')->set(
+            $markCount > 0 ? _t('页面已经被标记为<strong>%s</strong>', $statusList[$status]) : _t('没有页面被标记'),
+            $deleteCount > 0 ? 'success' : 'notice'
+        );
 
         /** 返回原网页 */
         $this->response->goBack();
@@ -218,8 +233,11 @@ class Widget_Contents_Page_Edit extends Widget_Contents_Post_Edit implements Wid
                 /** 删除草稿 */
                 $draft = $this->db->fetchRow($this->db->select('cid')
                     ->from('table.contents')
-                    ->where('table.contents.parent = ? AND table.contents.type = ?',
-                        $page, 'page_draft')
+                    ->where(
+                        'table.contents.parent = ? AND table.contents.type = ?',
+                        $page,
+                        'page_draft'
+                    )
                     ->limit(1));
 
                 /** 删除自定义字段 */
@@ -238,8 +256,10 @@ class Widget_Contents_Page_Edit extends Widget_Contents_Post_Edit implements Wid
         }
 
         /** 设置提示信息 */
-        $this->widget('Widget_Notice')->set($deleteCount > 0 ? _t('页面已经被删除') : _t('没有页面被删除'),
-        $deleteCount > 0 ? 'success' : 'notice');
+        $this->widget('Widget_Notice')->set(
+            $deleteCount > 0 ? _t('页面已经被删除') : _t('没有页面被删除'),
+            $deleteCount > 0 ? 'success' : 'notice'
+        );
 
         /** 返回原网页 */
         $this->response->goBack();
@@ -247,7 +267,7 @@ class Widget_Contents_Page_Edit extends Widget_Contents_Post_Edit implements Wid
     
     /**
      * 删除页面所属草稿
-     * 
+     *
      * @access public
      * @return void
      */
@@ -260,8 +280,11 @@ class Widget_Contents_Page_Edit extends Widget_Contents_Post_Edit implements Wid
             /** 删除草稿 */
             $draft = $this->db->fetchRow($this->db->select('cid')
                 ->from('table.contents')
-                ->where('table.contents.parent = ? AND table.contents.type = ?',
-                    $page, 'page_draft')
+                ->where(
+                    'table.contents.parent = ? AND table.contents.type = ?',
+                    $page,
+                    'page_draft'
+                )
                 ->limit(1));
 
             if ($draft) {
@@ -272,8 +295,10 @@ class Widget_Contents_Page_Edit extends Widget_Contents_Post_Edit implements Wid
         }
 
         /** 设置提示信息 */
-        $this->widget('Widget_Notice')->set($deleteCount > 0 ? _t('草稿已经被删除') : _t('没有草稿被删除'),
-        $deleteCount > 0 ? 'success' : 'notice');
+        $this->widget('Widget_Notice')->set(
+            $deleteCount > 0 ? _t('草稿已经被删除') : _t('没有草稿被删除'),
+            $deleteCount > 0 ? 'success' : 'notice'
+        );
         
         /** 返回原网页 */
         $this->response->goBack();

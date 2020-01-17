@@ -13,8 +13,11 @@ Typecho_Widget::widget('Widget_Contents_Post_Edit')->to($post);
                     <?php if ($post->draft): ?>
                         <?php if ($post->draft['cid'] != $post->cid): ?>
                             <?php $postModifyDate = new Typecho_Date($post->draft['modified']); ?>
-                            <cite class="edit-draft-notice"><?php _e('你正在编辑的是保存于 %s 的草稿, 你也可以 <a href="%s">删除它</a>', $postModifyDate->word(),
-                                    $security->getIndex('/action/contents-post-edit?do=deleteDraft&cid=' . $post->cid)); ?></cite>
+                            <cite class="edit-draft-notice"><?php _e(
+    '你正在编辑的是保存于 %s 的草稿, 你也可以 <a href="%s">删除它</a>',
+    $postModifyDate->word(),
+    $security->getIndex('/action/contents-post-edit?do=deleteDraft&cid=' . $post->cid)
+); ?></cite>
                         <?php else: ?>
                             <cite class="edit-draft-notice"><?php _e('当前正在编辑的是未发布的草稿'); ?></cite>
                         <?php endif; ?>
@@ -26,7 +29,7 @@ Typecho_Widget::widget('Widget_Contents_Post_Edit')->to($post);
                         <input type="text" id="title" name="title" autocomplete="off" value="<?php $post->title(); ?>" placeholder="<?php _e('标题'); ?>" class="w-100 text title" />
                     </p>
                     <?php $permalink = Typecho_Common::url($options->routingTable['post']['url'], $options->index);
-                    list ($scheme, $permalink) = explode(':', $permalink, 2);
+                    list($scheme, $permalink) = explode(':', $permalink, 2);
                     $permalink = ltrim($permalink, '/');
                     $permalink = preg_replace("/\[([_a-z0-9-]+)[^\]]*\]/i", "{\\1}", $permalink);
                     if ($post->have()) {
@@ -91,8 +94,8 @@ Typecho_Widget::widget('Widget_Contents_Post_Edit')->to($post);
                                     $categories = array();
                                 }
                                 ?>
-                                <?php while($category->next()): ?>
-                                <li><?php echo str_repeat('&nbsp;&nbsp;&nbsp;&nbsp;', $category->levels); ?><input type="checkbox" id="category-<?php $category->mid(); ?>" value="<?php $category->mid(); ?>" name="category[]" <?php if(in_array($category->mid, $categories)): ?>checked="true"<?php endif; ?>/>
+                                <?php while ($category->next()): ?>
+                                <li><?php echo str_repeat('&nbsp;&nbsp;&nbsp;&nbsp;', $category->levels); ?><input type="checkbox" id="category-<?php $category->mid(); ?>" value="<?php $category->mid(); ?>" name="category[]" <?php if (in_array($category->mid, $categories)): ?>checked="true"<?php endif; ?>/>
                                 <label for="category-<?php $category->mid(); ?>"><?php $category->name(); ?></label></li>
                                 <?php endwhile; ?>
                             </ul>
@@ -107,7 +110,7 @@ Typecho_Widget::widget('Widget_Contents_Post_Edit')->to($post);
 
                         <button type="button" id="advance-panel-btn" class="btn btn-xs"><?php _e('高级选项'); ?> <i class="i-caret-down"></i></button>
                         <div id="advance-panel">
-                            <?php if($user->pass('editor', true)): ?>
+                            <?php if ($user->pass('editor', true)): ?>
                             <section class="typecho-post-option visibility-option">
                                 <label for="visibility" class="typecho-label"><?php _e('公开度'); ?></label>
                                 <p>
@@ -131,11 +134,11 @@ Typecho_Widget::widget('Widget_Contents_Post_Edit')->to($post);
                             <section class="typecho-post-option allow-option">
                                 <label class="typecho-label"><?php _e('权限控制'); ?></label>
                                 <ul>
-                                    <li><input id="allowComment" name="allowComment" type="checkbox" value="1" <?php if($post->allow('comment')): ?>checked="true"<?php endif; ?> />
+                                    <li><input id="allowComment" name="allowComment" type="checkbox" value="1" <?php if ($post->allow('comment')): ?>checked="true"<?php endif; ?> />
                                     <label for="allowComment"><?php _e('允许评论'); ?></label></li>
-                                    <li><input id="allowPing" name="allowPing" type="checkbox" value="1" <?php if($post->allow('ping')): ?>checked="true"<?php endif; ?> />
+                                    <li><input id="allowPing" name="allowPing" type="checkbox" value="1" <?php if ($post->allow('ping')): ?>checked="true"<?php endif; ?> />
                                     <label for="allowPing"><?php _e('允许被引用'); ?></label></li>
-                                    <li><input id="allowFeed" name="allowFeed" type="checkbox" value="1" <?php if($post->allow('feed')): ?>checked="true"<?php endif; ?> />
+                                    <li><input id="allowFeed" name="allowFeed" type="checkbox" value="1" <?php if ($post->allow('feed')): ?>checked="true"<?php endif; ?> />
                                     <label for="allowFeed"><?php _e('允许在聚合中出现'); ?></label></li>
                                 </ul>
                             </section>
@@ -149,13 +152,16 @@ Typecho_Widget::widget('Widget_Contents_Post_Edit')->to($post);
                             <?php Typecho_Plugin::factory('admin/write-post.php')->advanceOption($post); ?>
                         </div><!-- end #advance-panel -->
 
-                        <?php if($post->have()): ?>
+                        <?php if ($post->have()): ?>
                         <?php $modified = new Typecho_Date($post->modified); ?>
                         <section class="typecho-post-option">
                             <p class="description">
                                 <br>&mdash;<br>
-                                <?php _e('本文由 <a href="%s">%s</a> 撰写',
-                                Typecho_Common::url('manage-posts.php?uid=' . $post->author->uid, $options->adminUrl), $post->author->screenName); ?><br>
+                                <?php _e(
+                                    '本文由 <a href="%s">%s</a> 撰写',
+                                    Typecho_Common::url('manage-posts.php?uid=' . $post->author->uid, $options->adminUrl),
+                                    $post->author->screenName
+                                ); ?><br>
                                 <?php _e('最后更新于 %s', $modified->word()); ?>
                             </p>
                         </section>

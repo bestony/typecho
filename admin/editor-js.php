@@ -1,4 +1,6 @@
-<?php if(!defined('__TYPECHO_ADMIN__')) exit; ?>
+<?php if (!defined('__TYPECHO_ADMIN__')) {
+    exit;
+} ?>
 <?php $content = !empty($post) ? $post : $page; if ($options->markdown): ?>
 <script src="<?php $options->adminStaticUrl('js', 'hyperdown.js?v=' . $suffixVersion); ?>"></script>
 <script src="<?php $options->adminStaticUrl('js', 'pagedown.js?v=' . $suffixVersion); ?>"></script>

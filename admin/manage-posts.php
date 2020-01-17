@@ -14,31 +14,31 @@ $isAllPosts = ('on' == $request->get('__typecho_all_posts') || 'on' == Typecho_C
             <div class="col-mb-12 typecho-list">
                 <div class="clearfix">
                     <ul class="typecho-option-tabs right">
-                    <?php if($user->pass('editor', true) && !isset($request->uid)): ?>
-                        <li class="<?php if($isAllPosts): ?> current<?php endif; ?>"><a href="<?php echo $request->makeUriByRequest('__typecho_all_posts=on'); ?>"><?php _e('所有'); ?></a></li>
-                        <li class="<?php if(!$isAllPosts): ?> current<?php endif; ?>"><a href="<?php echo $request->makeUriByRequest('__typecho_all_posts=off'); ?>"><?php _e('我的'); ?></a></li>
+                    <?php if ($user->pass('editor', true) && !isset($request->uid)): ?>
+                        <li class="<?php if ($isAllPosts): ?> current<?php endif; ?>"><a href="<?php echo $request->makeUriByRequest('__typecho_all_posts=on'); ?>"><?php _e('所有'); ?></a></li>
+                        <li class="<?php if (!$isAllPosts): ?> current<?php endif; ?>"><a href="<?php echo $request->makeUriByRequest('__typecho_all_posts=off'); ?>"><?php _e('我的'); ?></a></li>
                     <?php endif; ?>
                     </ul>
                     <ul class="typecho-option-tabs">
-                        <li<?php if(!isset($request->status) || 'all' == $request->get('status')): ?> class="current"<?php endif; ?>><a href="<?php $options->adminUrl('manage-posts.php'
+                        <li<?php if (!isset($request->status) || 'all' == $request->get('status')): ?> class="current"<?php endif; ?>><a href="<?php $options->adminUrl('manage-posts.php'
                         . (isset($request->uid) ? '?uid=' . $request->uid : '')); ?>"><?php _e('可用'); ?></a></li>
-                        <li<?php if('waiting' == $request->get('status')): ?> class="current"<?php endif; ?>><a href="<?php $options->adminUrl('manage-posts.php?status=waiting'
+                        <li<?php if ('waiting' == $request->get('status')): ?> class="current"<?php endif; ?>><a href="<?php $options->adminUrl('manage-posts.php?status=waiting'
                         . (isset($request->uid) ? '&uid=' . $request->uid : '')); ?>"><?php _e('待审核'); ?>
-                        <?php if(!$isAllPosts && $stat->myWaitingPostsNum > 0 && !isset($request->uid)): ?>
+                        <?php if (!$isAllPosts && $stat->myWaitingPostsNum > 0 && !isset($request->uid)): ?>
                             <span class="balloon"><?php $stat->myWaitingPostsNum(); ?></span>
-                        <?php elseif($isAllPosts && $stat->waitingPostsNum > 0 && !isset($request->uid)): ?>
+                        <?php elseif ($isAllPosts && $stat->waitingPostsNum > 0 && !isset($request->uid)): ?>
                             <span class="balloon"><?php $stat->waitingPostsNum(); ?></span>
-                        <?php elseif(isset($request->uid) && $stat->currentWaitingPostsNum > 0): ?>
+                        <?php elseif (isset($request->uid) && $stat->currentWaitingPostsNum > 0): ?>
                             <span class="balloon"><?php $stat->currentWaitingPostsNum(); ?></span>
                         <?php endif; ?>
                         </a></li>
-                        <li<?php if('draft' == $request->get('status')): ?> class="current"<?php endif; ?>><a href="<?php $options->adminUrl('manage-posts.php?status=draft'
+                        <li<?php if ('draft' == $request->get('status')): ?> class="current"<?php endif; ?>><a href="<?php $options->adminUrl('manage-posts.php?status=draft'
                         . (isset($request->uid) ? '&uid=' . $request->uid : '')); ?>"><?php _e('草稿'); ?>
-                        <?php if(!$isAllPosts && $stat->myDraftPostsNum > 0 && !isset($request->uid)): ?>
+                        <?php if (!$isAllPosts && $stat->myDraftPostsNum > 0 && !isset($request->uid)): ?>
                             <span class="balloon"><?php $stat->myDraftPostsNum(); ?></span>
-                        <?php elseif($isAllPosts && $stat->draftPostsNum > 0 && !isset($request->uid)): ?>
+                        <?php elseif ($isAllPosts && $stat->draftPostsNum > 0 && !isset($request->uid)): ?>
                             <span class="balloon"><?php $stat->draftPostsNum(); ?></span>
-                        <?php elseif(isset($request->uid) && $stat->currentDraftPostsNum > 0): ?>
+                        <?php elseif (isset($request->uid) && $stat->currentDraftPostsNum > 0): ?>
                             <span class="balloon"><?php $stat->currentDraftPostsNum(); ?></span>
                         <?php endif; ?>
                         </a></li>
@@ -73,15 +73,15 @@ $isAllPosts = ('on' == $request->get('__typecho_all_posts') || 'on' == Typecho_C
                             <select name="category">
                             	<option value=""><?php _e('所有分类'); ?></option>
                             	<?php Typecho_Widget::widget('Widget_Metas_Category_List')->to($category); ?>
-                            	<?php while($category->next()): ?>
-                            	<option value="<?php $category->mid(); ?>"<?php if($request->get('category') == $category->mid): ?> selected="true"<?php endif; ?>><?php $category->name(); ?></option>
+                            	<?php while ($category->next()): ?>
+                            	<option value="<?php $category->mid(); ?>"<?php if ($request->get('category') == $category->mid): ?> selected="true"<?php endif; ?>><?php $category->name(); ?></option>
                             	<?php endwhile; ?>
                             </select>
                             <button type="submit" class="btn btn-s"><?php _e('筛选'); ?></button>
-                            <?php if(isset($request->uid)): ?>
+                            <?php if (isset($request->uid)): ?>
                             <input type="hidden" value="<?php echo htmlspecialchars($request->get('uid')); ?>" name="uid" />
                             <?php endif; ?>
-                            <?php if(isset($request->status)): ?>
+                            <?php if (isset($request->status)): ?>
                                 <input type="hidden" value="<?php echo htmlspecialchars($request->get('status')); ?>" name="status" />
                             <?php endif; ?>
                         </div>
@@ -110,25 +110,25 @@ $isAllPosts = ('on' == $request->get('__typecho_all_posts') || 'on' == Typecho_C
                             </tr>
                         </thead>
                         <tbody>
-                        	<?php if($posts->have()): ?>
-                            <?php while($posts->next()): ?>
+                        	<?php if ($posts->have()): ?>
+                            <?php while ($posts->next()): ?>
                             <tr id="<?php $posts->theId(); ?>">
                                 <td><input type="checkbox" value="<?php $posts->cid(); ?>" name="cid[]"/></td>
                                 <td><a href="<?php $options->adminUrl('manage-comments.php?cid=' . ($posts->parentId ? $posts->parentId : $posts->cid)); ?>" class="balloon-button size-<?php echo Typecho_Common::splitByCount($posts->commentsNum, 1, 10, 20, 50, 100); ?>" title="<?php $posts->commentsNum(); ?> <?php _e('评论'); ?>"><?php $posts->commentsNum(); ?></a></td>
                                 <td>
                                 <a href="<?php $options->adminUrl('write-post.php?cid=' . $posts->cid); ?>"><?php $posts->title(); ?></a>
-                                <?php 
+                                <?php
                                 if ($posts->hasSaved || 'post_draft' == $posts->type) {
                                     echo '<em class="status">' . _t('草稿') . '</em>';
                                 }
                                 
                                 if ('hidden' == $posts->status) {
                                     echo '<em class="status">' . _t('隐藏') . '</em>';
-                                } else if ('waiting' == $posts->status) {
+                                } elseif ('waiting' == $posts->status) {
                                     echo '<em class="status">' . _t('待审核') . '</em>';
-                                } else if ('private' == $posts->status) {
+                                } elseif ('private' == $posts->status) {
                                     echo '<em class="status">' . _t('私密') . '</em>';
-                                } else if ($posts->password) {
+                                } elseif ($posts->password) {
                                     echo '<em class="status">' . _t('密码保护') . '</em>';
                                 }
                                 ?>
@@ -187,7 +187,7 @@ $isAllPosts = ('on' == $request->get('__typecho_all_posts') || 'on' == Typecho_C
                             </div>  
                         </div>
 
-                        <?php if($posts->have()): ?>
+                        <?php if ($posts->have()): ?>
                         <ul class="typecho-pager">
                             <?php $posts->pageNav(); ?>
                         </ul>

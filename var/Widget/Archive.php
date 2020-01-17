@@ -1,5 +1,7 @@
 <?php
-if (!defined('__TYPECHO_ROOT_DIR__')) exit;
+if (!defined('__TYPECHO_ROOT_DIR__')) {
+    exit;
+}
 /**
  * Typecho Blog Platform
  *
@@ -27,7 +29,7 @@ class Widget_Archive extends Widget_Abstract_Contents
     
     /**
      * 风格目录
-     * 
+     *
      * @access private
      * @var string
      */
@@ -159,7 +161,7 @@ class Widget_Archive extends Widget_Abstract_Contents
      * @access private
      * @var string
      */
-    private $_archiveTitle = NULL;
+    private $_archiveTitle = null;
 
     /**
      * 归档类型
@@ -179,9 +181,9 @@ class Widget_Archive extends Widget_Abstract_Contents
     
     /**
      * 是否为自定义首页, 主要为了标记自定义首页的情况
-     * 
+     *
      * (default value: false)
-     * 
+     *
      * @var boolean
      * @access private
      */
@@ -211,19 +213,19 @@ class Widget_Archive extends Widget_Abstract_Contents
      * @param mixed $params
      * @throws Typecho_Widget_Exception
      */
-    public function __construct($request, $response, $params = NULL)
+    public function __construct($request, $response, $params = null)
     {
         parent::__construct($request, $response, $params);
 
         $this->parameter->setDefault(array(
             'pageSize'          =>  $this->options->pageSize,
-            'type'              =>  NULL,
+            'type'              =>  null,
             'checkPermalink'    =>  true,
             'preview'           =>  false
         ));
 
         /** 用于判断是路由调用还是外部调用 */
-        if (NULL == $this->parameter->type) {
+        if (null == $this->parameter->type) {
             $this->parameter->type = Typecho_Router::$current;
         } else {
             $this->_invokeFromOutside = true;
@@ -239,7 +241,6 @@ class Widget_Archive extends Widget_Abstract_Contents
 
         /** 处理feed模式 **/
         if ('feed' == $this->parameter->type) {
-
             $this->_currentFeedUrl = '';
 
             /** 判断聚合类型 */
@@ -291,7 +292,7 @@ class Widget_Archive extends Widget_Abstract_Contents
     
     /**
      * 评论地址
-     * 
+     *
      * @access protected
      * @return string
      */
@@ -579,7 +580,7 @@ class Widget_Archive extends Widget_Abstract_Contents
 
     /**
      * 获取页数
-     * 
+     *
      * @return integer
      */
     public function getTotalPage()
@@ -605,7 +606,7 @@ class Widget_Archive extends Widget_Abstract_Contents
 
     /**
      * 检查链接是否正确
-     * 
+     *
      * @access private
      * @return void
      */
@@ -822,7 +823,7 @@ class Widget_Archive extends Widget_Abstract_Contents
         $select->limit(1);
         $this->query($select);
 
-        if (!$this->have() 
+        if (!$this->have()
             || (isset($this->request->category) && $this->category != $this->request->category && !$this->parameter->preview)
             || (isset($this->request->directory) && $this->request->directory != implode('/', $this->directory) && !$this->parameter->preview)) {
             if (!$this->_invokeFromOutside) {
@@ -989,8 +990,10 @@ class Widget_Archive extends Widget_Abstract_Contents
         }
 
         /** 如果是标签 */
-        $tag = $this->db->fetchRow($tagSelect,
-        array($this->widget('Widget_Abstract_Metas'), 'filter'));
+        $tag = $this->db->fetchRow(
+            $tagSelect,
+            array($this->widget('Widget_Abstract_Metas'), 'filter')
+        );
 
         if (!$tag) {
             throw new Typecho_Widget_Exception(_t('标签不存在'), 404);
@@ -1048,9 +1051,11 @@ class Widget_Archive extends Widget_Abstract_Contents
     {
         $uid = $this->request->filter('int')->uid;
 
-        $author = $this->db->fetchRow($this->db->select()->from('table.users')
+        $author = $this->db->fetchRow(
+            $this->db->select()->from('table.users')
         ->where('uid = ?', $uid),
-        array($this->widget('Widget_Abstract_Users'), 'filter'));
+            array($this->widget('Widget_Abstract_Users'), 'filter')
+        );
 
         if (!$author) {
             throw new Typecho_Widget_Exception(_t('作者不存在'), 404);
@@ -1117,7 +1122,7 @@ class Widget_Archive extends Widget_Abstract_Contents
 
             /** 设置标题 */
             $this->_archiveTitle = _t('%d年%d月%d日', $year, $month, $day);
-        } else if (!empty($year) && !empty($month)) {
+        } elseif (!empty($year) && !empty($month)) {
 
             /** 如果按月归档 */
             $from = mktime(0, 0, 0, $month, 1, $year);
@@ -1128,7 +1133,7 @@ class Widget_Archive extends Widget_Abstract_Contents
 
             /** 设置标题 */
             $this->_archiveTitle = _t('%d年%d月', $year, $month);
-        } else if (!empty($year)) {
+        } elseif (!empty($year)) {
 
             /** 如果按年归档 */
             $from = mktime(0, 0, 0, 1, 1, $year);
@@ -1300,9 +1305,12 @@ class Widget_Archive extends Widget_Abstract_Contents
             $filterKeywords = $this->request->filter('search')->s;
 
             /** 跳转到搜索页 */
-            if (NULL != $filterKeywords) {
-                $this->response->redirect(Typecho_Router::url('search',
-                array('keywords' => urlencode($filterKeywords)), $this->options->index));
+            if (null != $filterKeywords) {
+                $this->response->redirect(Typecho_Router::url(
+                    'search',
+                    array('keywords' => urlencode($filterKeywords)),
+                    $this->options->index
+                ));
             }
         }
 
@@ -1315,7 +1323,7 @@ class Widget_Archive extends Widget_Abstract_Contents
                 $this->request->setParam('cid', intval(substr($frontPage, 5)));
                 $this->parameter->type = 'page';
                 $this->_makeSinglePageAsFrontPage = true;
-            } else if (0 === strpos($frontPage, 'file:')) {
+            } elseif (0 === strpos($frontPage, 'file:')) {
                 // 显示某个文件
                 $this->setThemeFile(substr($frontPage, 5));
                 return;
@@ -1342,12 +1350,20 @@ class Widget_Archive extends Widget_Abstract_Contents
             } else {
                 if ('post' == $this->parameter->type || 'page' == $this->parameter->type) {
                     if ($this->user->hasLogin()) {
-                        $select = $this->select()->where('table.contents.status = ? OR table.contents.status = ? OR
+                        $select = $this->select()->where(
+                            'table.contents.status = ? OR table.contents.status = ? OR
                             (table.contents.status = ? AND table.contents.authorId = ?)',
-                            'publish', 'hidden', 'private', $this->user->uid);
+                            'publish',
+                            'hidden',
+                            'private',
+                            $this->user->uid
+                        );
                     } else {
-                        $select = $this->select()->where('table.contents.status = ? OR table.contents.status = ?',
-                            'publish', 'hidden');
+                        $select = $this->select()->where(
+                            'table.contents.status = ? OR table.contents.status = ?',
+                            'publish',
+                            'hidden'
+                        );
                     }
                 } else {
                     if ($this->user->hasLogin()) {
@@ -1408,7 +1424,7 @@ class Widget_Archive extends Widget_Abstract_Contents
      * @param string $more 文章截取后缀
      * @return void
      */
-    public function content($more = NULL)
+    public function content($more = null)
     {
         parent::content($this->is('single') ? false : $more);
     }
@@ -1442,19 +1458,33 @@ class Widget_Archive extends Widget_Abstract_Contents
             $template = array_merge($default, $config);
             
             $total = $this->getTotal();
-            $this->pluginHandle()->trigger($hasNav)->pageNav($this->_currentPage, $total, 
-                $this->parameter->pageSize, $prev, $next, $splitPage, $splitWord);
+            $this->pluginHandle()->trigger($hasNav)->pageNav(
+                $this->_currentPage,
+                $total,
+                $this->parameter->pageSize,
+                $prev,
+                $next,
+                $splitPage,
+                $splitWord
+            );
 
             if (!$hasNav && $total > $this->parameter->pageSize) {
-                $query = Typecho_Router::url($this->parameter->type .
-                (false === strpos($this->parameter->type, '_page') ? '_page' : NULL),
-                $this->_pageRow, $this->options->index);
+                $query = Typecho_Router::url(
+                    $this->parameter->type .
+                (false === strpos($this->parameter->type, '_page') ? '_page' : null),
+                    $this->_pageRow,
+                    $this->options->index
+                );
 
                 /** 使用盒状分页 */
-                $nav = new Typecho_Widget_Helper_PageNavigator_Box($total, 
-                    $this->_currentPage, $this->parameter->pageSize, $query);
+                $nav = new Typecho_Widget_Helper_PageNavigator_Box(
+                    $total,
+                    $this->_currentPage,
+                    $this->parameter->pageSize,
+                    $query
+                );
                 
-                echo '<' . $template['wrapTag'] . (empty($template['wrapClass']) 
+                echo '<' . $template['wrapTag'] . (empty($template['wrapClass'])
                     ? '' : ' class="' . $template['wrapClass'] . '"') . '>';
                 $nav->render($prev, $next, $splitPage, $splitWord, $template);
                 echo '</' . $template['wrapTag'] . '>';
@@ -1474,13 +1504,20 @@ class Widget_Archive extends Widget_Abstract_Contents
     {
         if ($this->have()) {
             if (empty($this->_pageNav)) {
-                $query = Typecho_Router::url($this->parameter->type .
-                (false === strpos($this->parameter->type, '_page') ? '_page' : NULL),
-                $this->_pageRow, $this->options->index);
+                $query = Typecho_Router::url(
+                    $this->parameter->type .
+                (false === strpos($this->parameter->type, '_page') ? '_page' : null),
+                    $this->_pageRow,
+                    $this->options->index
+                );
 
                 /** 使用盒状分页 */
-                $this->_pageNav = new Typecho_Widget_Helper_PageNavigator_Classic($this->getTotal(),
-                $this->_currentPage, $this->parameter->pageSize, $query);
+                $this->_pageNav = new Typecho_Widget_Helper_PageNavigator_Classic(
+                    $this->getTotal(),
+                    $this->_currentPage,
+                    $this->parameter->pageSize,
+                    $query
+                );
             }
 
             $this->_pageNav->{$page}($word);
@@ -1507,8 +1544,8 @@ class Widget_Archive extends Widget_Abstract_Contents
     }
 
     /**
-     * 获取回响归档对象 
-     * 
+     * 获取回响归档对象
+     *
      * @access public
      * @return Widget_Comments_Ping
      */
@@ -1547,10 +1584,13 @@ class Widget_Archive extends Widget_Abstract_Contents
      * @param array $custom 定制化样式
      * @return void
      */
-    public function theNext($format = '%s', $default = NULL, $custom = array())
+    public function theNext($format = '%s', $default = null, $custom = array())
     {
-        $content = $this->db->fetchRow($this->select()->where('table.contents.created > ? AND table.contents.created < ?',
-            $this->created, $this->options->time)
+        $content = $this->db->fetchRow($this->select()->where(
+            'table.contents.created > ? AND table.contents.created < ?',
+            $this->created,
+            $this->options->time
+        )
             ->where('table.contents.status = ?', 'publish')
             ->where('table.contents.type = ?', $this->type)
             ->where("table.contents.password IS NULL OR table.contents.password = ''")
@@ -1560,8 +1600,8 @@ class Widget_Archive extends Widget_Abstract_Contents
         if ($content) {
             $content = $this->filter($content);
             $default = array(
-                'title' => NULL,
-                'tagClass' => NULL
+                'title' => null,
+                'tagClass' => null
             );
             $custom = array_merge($default, $custom);
             extract($custom);
@@ -1585,7 +1625,7 @@ class Widget_Archive extends Widget_Abstract_Contents
      * @param array $custom 定制化样式
      * @return void
      */
-    public function thePrev($format = '%s', $default = NULL, $custom = array())
+    public function thePrev($format = '%s', $default = null, $custom = array())
     {
         $content = $this->db->fetchRow($this->select()->where('table.contents.created < ?', $this->created)
             ->where('table.contents.status = ?', 'publish')
@@ -1597,8 +1637,8 @@ class Widget_Archive extends Widget_Abstract_Contents
         if ($content) {
             $content = $this->filter($content);
             $default = array(
-                'title' => NULL,
-                'tagClass' => NULL
+                'title' => null,
+                'tagClass' => null
             );
             $custom = array_merge($default, $custom);
             extract($custom);
@@ -1621,19 +1661,23 @@ class Widget_Archive extends Widget_Abstract_Contents
      * @param string $type 关联类型
      * @return Typecho_Widget
      */
-    public function related($limit = 5, $type = NULL)
+    public function related($limit = 5, $type = null)
     {
         $type = strtolower($type);
 
         switch ($type) {
             case 'author':
                 /** 如果访问权限被设置为禁止,则tag会被置为空 */
-                return $this->widget('Widget_Contents_Related_Author',
-                array('cid' => $this->cid, 'type' => $this->type, 'author' => $this->author->uid, 'limit' => $limit));
+                return $this->widget(
+                    'Widget_Contents_Related_Author',
+                    array('cid' => $this->cid, 'type' => $this->type, 'author' => $this->author->uid, 'limit' => $limit)
+                );
             default:
                 /** 如果访问权限被设置为禁止,则tag会被置为空 */
-                return $this->widget('Widget_Contents_Related',
-                array('cid' => $this->cid, 'type' => $this->type, 'tags' => $this->tags, 'limit' => $limit));
+                return $this->widget(
+                    'Widget_Contents_Related',
+                    array('cid' => $this->cid, 'type' => $this->type, 'tags' => $this->tags, 'limit' => $limit)
+                );
         }
     }
 
@@ -1644,7 +1688,7 @@ class Widget_Archive extends Widget_Abstract_Contents
      * @param string $rule 规则
      * @return void
      */
-    public function header($rule = NULL)
+    public function header($rule = null)
     {
         $rules = array();
         $allows = array(
@@ -1818,7 +1862,8 @@ class Widget_Archive extends Widget_Abstract_Contents
         input.type = 'hidden';
         input.name = '_';
         input.value = " . Typecho_Common::shuffleScriptVar(
-            $this->security->getToken($this->request->getRequestUrl())) . "
+                        $this->security->getToken($this->request->getRequestUrl())
+                    ) . "
 
         if (null != r) {
             var forms = r.getElementsByTagName('form');
@@ -1889,14 +1934,14 @@ class Widget_Archive extends Widget_Abstract_Contents
 
     /**
      * 输出归档标题
-     * 
-     * @param mixed $defines 
-     * @param string $before 
-     * @param string $end 
+     *
+     * @param mixed $defines
+     * @param string $before
+     * @param string $end
      * @access public
      * @return void
      */
-    public function archiveTitle($defines = NULL, $before = ' &raquo; ', $end = '')
+    public function archiveTitle($defines = null, $before = ' &raquo; ', $end = '')
     {
         if ($this->_archiveTitle) {
             $define = '%s';
@@ -1926,7 +1971,7 @@ class Widget_Archive extends Widget_Abstract_Contents
      * @param string $archiveSlug 归档名称
      * @return boolean
      */
-    public function is($archiveType, $archiveSlug = NULL)
+    public function is($archiveType, $archiveSlug = null)
     {
         return ($archiveType == $this->_archiveType ||
         (($this->_archiveSingle ? 'single' : 'archive') == $archiveType && 'index' != $this->_archiveType) ||
@@ -1995,7 +2040,7 @@ class Widget_Archive extends Widget_Abstract_Contents
                 if (file_exists($this->_themeDir . 'page.php')) {
                     $this->_themeFile = 'page.php';
                     $validated = true;
-                } else if (file_exists($this->_themeDir . 'post.php')) {
+                } elseif (file_exists($this->_themeDir . 'post.php')) {
                     $this->_themeFile = 'post.php';
                     $validated = true;
                 }
@@ -2051,8 +2096,10 @@ class Widget_Archive extends Widget_Abstract_Contents
         $this->_feed->setFeedUrl($this->request->makeUriByRequest());
 
         if ($this->is('single') || 'comments' == $this->parameter->type) {
-            $this->_feed->setTitle(_t('%s 的评论',
-            $this->options->title . ($this->_archiveTitle ? ' - ' . $this->_archiveTitle : NULL)));
+            $this->_feed->setTitle(_t(
+                '%s 的评论',
+                $this->options->title . ($this->_archiveTitle ? ' - ' . $this->_archiveTitle : null)
+            ));
 
             if ('comments' == $this->parameter->type) {
                 $comments = $this->widget('Widget_Comments_Recent', 'pageSize=10');
@@ -2063,7 +2110,7 @@ class Widget_Archive extends Widget_Abstract_Contents
             while ($comments->next()) {
                 $suffix = $this->pluginHandle()->trigger($plugged)->commentFeedItem($this->_feedType, $comments);
                 if (!$plugged) {
-                    $suffix = NULL;
+                    $suffix = null;
                 }
 
                 $this->_feed->addItem(array(
@@ -2081,20 +2128,20 @@ class Widget_Archive extends Widget_Abstract_Contents
                 ));
             }
         } else {
-            $this->_feed->setTitle($this->options->title . ($this->_archiveTitle ? ' - ' . $this->_archiveTitle : NULL));
+            $this->_feed->setTitle($this->options->title . ($this->_archiveTitle ? ' - ' . $this->_archiveTitle : null));
 
             while ($this->next()) {
                 $suffix = $this->pluginHandle()->trigger($plugged)->feedItem($this->_feedType, $this);
                 if (!$plugged) {
-                    $suffix = NULL;
+                    $suffix = null;
                 }
 
                 $feedUrl = '';
                 if (Typecho_Feed::RSS2 == $this->_feedType) {
                     $feedUrl = $this->feedUrl;
-                } else if (Typecho_Feed::RSS1 == $this->_feedType) {
+                } elseif (Typecho_Feed::RSS1 == $this->_feedType) {
                     $feedUrl = $this->feedRssUrl;
-                } else if (Typecho_Feed::ATOM1 == $this->_feedType) {
+                } elseif (Typecho_Feed::ATOM1 == $this->_feedType) {
                     $feedUrl = $this->feedAtomUrl;
                 }
 
@@ -2117,4 +2164,3 @@ class Widget_Archive extends Widget_Abstract_Contents
         echo $this->_feed->__toString();
     }
 }
-

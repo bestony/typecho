@@ -17,7 +17,8 @@ define('__TYPECHO_MB_SUPPORTED__', function_exists('mb_get_info') && function_ex
  * @param string $string 需要翻译的文字
  * @return string
  */
-function _t($string) {
+function _t($string)
+{
     if (func_num_args() <= 1) {
         return Typecho_I18n::translate($string);
     } else {
@@ -33,7 +34,8 @@ function _t($string) {
  * @param string $string 需要翻译并输出的文字
  * @return void
  */
-function _e() {
+function _e()
+{
     $args = func_get_args();
     echo call_user_func_array('_t', $args);
 }
@@ -46,7 +48,8 @@ function _e() {
  * @param integer $number 数字
  * @return string
  */
-function _n($single, $plural, $number) {
+function _n($single, $plural, $number)
+{
     return str_replace('%d', $number, Typecho_I18n::ngettext($single, $plural, $number));
 }
 
@@ -65,7 +68,7 @@ class Typecho_Common
 
     /**
      * 允许的属性
-     * 
+     *
      * @access private
      * @var array
      */
@@ -89,8 +92,8 @@ class Typecho_Common
 
     /**
      * 将字符串变成大写的回调函数
-     * 
-     * @param array $matches 
+     *
+     * @param array $matches
      * @access public
      * @return string
      */
@@ -129,9 +132,9 @@ class Typecho_Common
     }
 
     /**
-     * __filterAttrs  
-     * 
-     * @param mixed $matches 
+     * __filterAttrs
+     *
+     * @param mixed $matches
      * @static
      * @access public
      * @return bool
@@ -163,7 +166,7 @@ class Typecho_Common
     
     /**
      * 解析属性
-     * 
+     *
      * @access public
      * @param string $attrs 属性字符串
      * @return array
@@ -190,24 +193,23 @@ class Typecho_Common
                         $value = '';
                     }
                 }
-                
-            } else if (ctype_space($attrs[$i]) && -1 == $pos) {
+            } elseif (ctype_space($attrs[$i]) && -1 == $pos) {
                 $pos = -2;
-            } else if ('=' == $attrs[$i] && 0 > $pos) {
+            } elseif ('=' == $attrs[$i] && 0 > $pos) {
                 $pos = 0;
-            } else if (('"' == $attrs[$i] || "'" == $attrs[$i]) && 0 == $pos) {
+            } elseif (('"' == $attrs[$i] || "'" == $attrs[$i]) && 0 == $pos) {
                 $quote = $attrs[$i];
                 $value .= $attrs[$i];
                 $pos = 1;
-            } else if ($quote != $attrs[$i] && 1 == $pos) {
+            } elseif ($quote != $attrs[$i] && 1 == $pos) {
                 $value .= $attrs[$i];
-            } else if ($quote == $attrs[$i] && 1 == $pos) {
+            } elseif ($quote == $attrs[$i] && 1 == $pos) {
                 $pos = -1;
                 $value .= $attrs[$i];
                 $result[trim($key)] = $value;
                 $key = '';
                 $value = '';
-            } else if ('=' != $attrs[$i] && !ctype_space($attrs[$i]) && -2 == $pos) {
+            } elseif ('=' != $attrs[$i] && !ctype_space($attrs[$i]) && -2 == $pos) {
                 if ('' != ($key = trim($key))) {
                     $result[$key] = '';
                 }
@@ -316,7 +318,7 @@ class Typecho_Common
             if ($exception instanceof Typecho_Db_Adapter_Exception) {
                 $code = 503;
                 $message = 'Error establishing a database connection';
-            } else if ($exception instanceof Typecho_Db_Query_Exception) {
+            } elseif ($exception instanceof Typecho_Db_Query_Exception) {
                 $message = 'Database Query Error';
             }
         } else {
@@ -408,12 +410,14 @@ EOF;
      * @param string $path 指定的路径名称
      * @return boolean
      */
-    public static function isAvailableClass($className, $path = NULL)
+    public static function isAvailableClass($className, $path = null)
     {
         /** 获取所有include目录 */
         //增加安全目录检测 fix issue 106
-        $dirs = array_map('realpath', array_filter(explode(PATH_SEPARATOR, get_include_path()),
-        array('Typecho_Common', '__safePath')));
+        $dirs = array_map('realpath', array_filter(
+            explode(PATH_SEPARATOR, get_include_path()),
+            array('Typecho_Common', '__safePath')
+        ));
 
         $file = str_replace('_', '/', $className) . '.php';
 
@@ -438,8 +442,8 @@ EOF;
     }
 
     /**
-     * 检测是否在app engine上运行，屏蔽某些功能 
-     * 
+     * 检测是否在app engine上运行，屏蔽某些功能
+     *
      * @static
      * @access public
      * @return boolean
@@ -449,7 +453,7 @@ EOF;
         return !empty($_SERVER['HTTP_APPNAME'])                     // SAE
             || !!getenv('HTTP_BAE_ENV_APPID')                       // BAE
             || !!getenv('HTTP_BAE_LOGID')                           // BAE 3.0
-            || (isset($_SERVER['SERVER_SOFTWARE']) && strpos($_SERVER['SERVER_SOFTWARE'],'Google App Engine') !== false) // GAE
+            || (isset($_SERVER['SERVER_SOFTWARE']) && strpos($_SERVER['SERVER_SOFTWARE'], 'Google App Engine') !== false) // GAE
             ;
     }
 
@@ -508,13 +512,13 @@ EOF;
      */
     public static function buildUrl($params)
     {
-        return (isset($params['scheme']) ? $params['scheme'] . '://' : NULL)
-        . (isset($params['user']) ? $params['user'] . (isset($params['pass']) ? ':' . $params['pass'] : NULL) . '@' : NULL)
-        . (isset($params['host']) ? $params['host'] : NULL)
-        . (isset($params['port']) ? ':' . $params['port'] : NULL)
-        . (isset($params['path']) ? $params['path'] : NULL)
-        . (isset($params['query']) ? '?' . $params['query'] : NULL)
-        . (isset($params['fragment']) ? '#' . $params['fragment'] : NULL);
+        return (isset($params['scheme']) ? $params['scheme'] . '://' : null)
+        . (isset($params['user']) ? $params['user'] . (isset($params['pass']) ? ':' . $params['pass'] : null) . '@' : null)
+        . (isset($params['host']) ? $params['host'] : null)
+        . (isset($params['port']) ? ':' . $params['port'] : null)
+        . (isset($params['path']) ? $params['path'] : null)
+        . (isset($params['query']) ? '?' . $params['query'] : null)
+        . (isset($params['fragment']) ? '#' . $params['fragment'] : null);
     }
 
     /**
@@ -615,7 +619,7 @@ EOF;
      * @param string $allowableTags 需要忽略的html标签
      * @return string
      */
-    public static function stripTags($html, $allowableTags = NULL)
+    public static function stripTags($html, $allowableTags = null)
     {
         $normalizeTags = '';
         $allowableAttributes = array();
@@ -624,15 +628,18 @@ EOF;
             $normalizeTags = '<' . implode('><', array_map('strtolower', $tags[1])) . '>';
             $attributes = array_map('trim', $tags[2]);
             foreach ($attributes as $key => $val) {
-                $allowableAttributes[strtolower($tags[1][$key])] = 
+                $allowableAttributes[strtolower($tags[1][$key])] =
                     array_map('strtolower', array_keys(self::__parseAttrs($val)));
             }
         }
 
         self::$_allowableAttributes = $allowableAttributes;
         $html = strip_tags($html, $normalizeTags);
-        $html = preg_replace_callback("/<([_a-z0-9-]+)(\s+[^>]+)?>/is",
-            array('Typecho_Common', '__filterAttrs'), $html);
+        $html = preg_replace_callback(
+            "/<([_a-z0-9-]+)(\s+[^>]+)?>/is",
+            array('Typecho_Common', '__filterAttrs'),
+            $html
+        );
 
         return $html;
     }
@@ -684,60 +691,60 @@ EOF;
      */
     public static function removeXSS($val)
     {
-       // remove all non-printable characters. CR(0a) and LF(0b) and TAB(9) are allowed
-       // this prevents some character re-spacing such as <java\0script>
-       // note that you have to handle splits with \n, \r, and \t later since they *are* allowed in some inputs
-       $val = preg_replace('/([\x00-\x08]|[\x0b-\x0c]|[\x0e-\x19])/', '', $val);
+        // remove all non-printable characters. CR(0a) and LF(0b) and TAB(9) are allowed
+        // this prevents some character re-spacing such as <java\0script>
+        // note that you have to handle splits with \n, \r, and \t later since they *are* allowed in some inputs
+        $val = preg_replace('/([\x00-\x08]|[\x0b-\x0c]|[\x0e-\x19])/', '', $val);
 
-       // straight replacements, the user should never need these since they're normal characters
-       // this prevents like <IMG SRC=&#X40&#X61&#X76&#X61&#X73&#X63&#X72&#X69&#X70&#X74&#X3A&#X61&#X6C&#X65&#X72&#X74&#X28&#X27&#X58&#X53&#X53&#X27&#X29>
-       $search = 'abcdefghijklmnopqrstuvwxyz';
-       $search .= 'ABCDEFGHIJKLMNOPQRSTUVWXYZ';
-       $search .= '1234567890!@#$%^&*()';
-       $search .= '~`";:?+/={}[]-_|\'\\';
+        // straight replacements, the user should never need these since they're normal characters
+        // this prevents like <IMG SRC=&#X40&#X61&#X76&#X61&#X73&#X63&#X72&#X69&#X70&#X74&#X3A&#X61&#X6C&#X65&#X72&#X74&#X28&#X27&#X58&#X53&#X53&#X27&#X29>
+        $search = 'abcdefghijklmnopqrstuvwxyz';
+        $search .= 'ABCDEFGHIJKLMNOPQRSTUVWXYZ';
+        $search .= '1234567890!@#$%^&*()';
+        $search .= '~`";:?+/={}[]-_|\'\\';
 
-       for ($i = 0; $i < strlen($search); $i++) {
-          // ;? matches the ;, which is optional
-          // 0{0,7} matches any padded zeros, which are optional and go up to 8 chars
+        for ($i = 0; $i < strlen($search); $i++) {
+            // ;? matches the ;, which is optional
+            // 0{0,7} matches any padded zeros, which are optional and go up to 8 chars
 
-          // &#x0040 @ search for the hex values
+            // &#x0040 @ search for the hex values
           $val = preg_replace('/(&#[xX]0{0,8}'.dechex(ord($search[$i])).';?)/i', $search[$i], $val); // with a ;
           // &#00064 @ 0{0,7} matches '0' zero to seven times
           $val = preg_replace('/(&#0{0,8}'.ord($search[$i]).';?)/', $search[$i], $val); // with a ;
-       }
+        }
 
-       // now the only remaining whitespace attacks are \t, \n, and \r
-       $ra1 = Array('javascript', 'vbscript', 'expression', 'applet', 'meta', 'xml', 'blink', 'link', 'style', 'script', 'embed', 'object', 'iframe', 'frame', 'frameset', 'ilayer', 'layer', 'bgsound', 'title', 'base');
-       $ra2 = Array('onabort', 'onactivate', 'onafterprint', 'onafterupdate', 'onbeforeactivate', 'onbeforecopy', 'onbeforecut', 'onbeforedeactivate', 'onbeforeeditfocus', 'onbeforepaste', 'onbeforeprint', 'onbeforeunload', 'onbeforeupdate', 'onblur', 'onbounce', 'oncellchange', 'onchange', 'onclick', 'oncontextmenu', 'oncontrolselect', 'oncopy', 'oncut', 'ondataavailable', 'ondatasetchanged', 'ondatasetcomplete', 'ondblclick', 'ondeactivate', 'ondrag', 'ondragend', 'ondragenter', 'ondragleave', 'ondragover', 'ondragstart', 'ondrop', 'onerror', 'onerrorupdate', 'onfilterchange', 'onfinish', 'onfocus', 'onfocusin', 'onfocusout', 'onhelp', 'onkeydown', 'onkeypress', 'onkeyup', 'onlayoutcomplete', 'onload', 'onlosecapture', 'onmousedown', 'onmouseenter', 'onmouseleave', 'onmousemove', 'onmouseout', 'onmouseover', 'onmouseup', 'onmousewheel', 'onmove', 'onmoveend', 'onmovestart', 'onpaste', 'onpropertychange', 'onreadystatechange', 'onreset', 'onresize', 'onresizeend', 'onresizestart', 'onrowenter', 'onrowexit', 'onrowsdelete', 'onrowsinserted', 'onscroll', 'onselect', 'onselectionchange', 'onselectstart', 'onstart', 'onstop', 'onsubmit', 'onunload');
-       $ra = array_merge($ra1, $ra2);
+        // now the only remaining whitespace attacks are \t, \n, and \r
+        $ra1 = array('javascript', 'vbscript', 'expression', 'applet', 'meta', 'xml', 'blink', 'link', 'style', 'script', 'embed', 'object', 'iframe', 'frame', 'frameset', 'ilayer', 'layer', 'bgsound', 'title', 'base');
+        $ra2 = array('onabort', 'onactivate', 'onafterprint', 'onafterupdate', 'onbeforeactivate', 'onbeforecopy', 'onbeforecut', 'onbeforedeactivate', 'onbeforeeditfocus', 'onbeforepaste', 'onbeforeprint', 'onbeforeunload', 'onbeforeupdate', 'onblur', 'onbounce', 'oncellchange', 'onchange', 'onclick', 'oncontextmenu', 'oncontrolselect', 'oncopy', 'oncut', 'ondataavailable', 'ondatasetchanged', 'ondatasetcomplete', 'ondblclick', 'ondeactivate', 'ondrag', 'ondragend', 'ondragenter', 'ondragleave', 'ondragover', 'ondragstart', 'ondrop', 'onerror', 'onerrorupdate', 'onfilterchange', 'onfinish', 'onfocus', 'onfocusin', 'onfocusout', 'onhelp', 'onkeydown', 'onkeypress', 'onkeyup', 'onlayoutcomplete', 'onload', 'onlosecapture', 'onmousedown', 'onmouseenter', 'onmouseleave', 'onmousemove', 'onmouseout', 'onmouseover', 'onmouseup', 'onmousewheel', 'onmove', 'onmoveend', 'onmovestart', 'onpaste', 'onpropertychange', 'onreadystatechange', 'onreset', 'onresize', 'onresizeend', 'onresizestart', 'onrowenter', 'onrowexit', 'onrowsdelete', 'onrowsinserted', 'onscroll', 'onselect', 'onselectionchange', 'onselectstart', 'onstart', 'onstop', 'onsubmit', 'onunload');
+        $ra = array_merge($ra1, $ra2);
 
-       $found = true; // keep replacing as long as the previous round replaced something
-       while ($found == true) {
-          $val_before = $val;
-          for ($i = 0; $i < sizeof($ra); $i++) {
-             $pattern = '/';
-             for ($j = 0; $j < strlen($ra[$i]); $j++) {
-                if ($j > 0) {
-                   $pattern .= '(';
-                   $pattern .= '(&#[xX]0{0,8}([9ab]);)';
-                   $pattern .= '|';
-                   $pattern .= '|(&#0{0,8}([9|10|13]);)';
-                   $pattern .= ')*';
+        $found = true; // keep replacing as long as the previous round replaced something
+        while ($found == true) {
+            $val_before = $val;
+            for ($i = 0; $i < sizeof($ra); $i++) {
+                $pattern = '/';
+                for ($j = 0; $j < strlen($ra[$i]); $j++) {
+                    if ($j > 0) {
+                        $pattern .= '(';
+                        $pattern .= '(&#[xX]0{0,8}([9ab]);)';
+                        $pattern .= '|';
+                        $pattern .= '|(&#0{0,8}([9|10|13]);)';
+                        $pattern .= ')*';
+                    }
+                    $pattern .= $ra[$i][$j];
                 }
-                $pattern .= $ra[$i][$j];
-             }
-             $pattern .= '/i';
-             $replacement = substr($ra[$i], 0, 2).'<x>'.substr($ra[$i], 2); // add in <> to nerf the tag
+                $pattern .= '/i';
+                $replacement = substr($ra[$i], 0, 2).'<x>'.substr($ra[$i], 2); // add in <> to nerf the tag
              $val = preg_replace($pattern, $replacement, $val); // filter out the hex tags
 
              if ($val_before == $val) {
-                // no replacements were made, so exit the loop
-                $found = false;
+                 // no replacements were made, so exit the loop
+                 $found = false;
              }
-          }
-       }
+            }
+        }
 
-       return $val;
+        return $val;
     }
 
     /**
@@ -786,15 +793,15 @@ EOF;
         if (__TYPECHO_MB_SUPPORTED__) {
             return mb_strlen($str, self::$charset);
         } else {
-            return 'UTF-8' == strtoupper(self::$charset) 
+            return 'UTF-8' == strtoupper(self::$charset)
                 ? strlen(utf8_decode($str)) : strlen($str);
         }
     }
 
     /**
      * 获取大写字符串
-     * 
-     * @param string $str 
+     *
+     * @param string $str
      * @access public
      * @return string
      */
@@ -837,7 +844,7 @@ EOF;
      * @param integer $maxLength 缩略名最大长度
      * @return string
      */
-    public static function slugName($str, $default = NULL, $maxLength = 128)
+    public static function slugName($str, $default = null, $maxLength = 128)
     {
         $str = trim($str);
 
@@ -861,7 +868,7 @@ EOF;
             }
 
             $str = $return;
-        } else if ('UTF-8' == strtoupper(self::$charset)) {
+        } elseif ('UTF-8' == strtoupper(self::$charset)) {
             if (preg_match_all("/[\w" . preg_quote('_-') . "]+/u", $str, $matches)) {
                 $str = implode('-', $matches[0]);
             }
@@ -906,7 +913,7 @@ EOF;
      * @param string $salt 扰码
      * @return string
      */
-    public static function hash($string, $salt = NULL)
+    public static function hash($string, $salt = null)
     {
         /** 生成随机字符串 */
         $salt = empty($salt) ? self::randString(9) : $salt;
@@ -997,13 +1004,13 @@ EOF;
     }
 
     /**
-     * 获取gravatar头像地址 
-     * 
-     * @param string $mail 
-     * @param int $size 
-     * @param string $rating 
-     * @param string $default 
-     * @param bool $isSecure 
+     * 获取gravatar头像地址
+     *
+     * @param string $mail
+     * @param int $size
+     * @param string $rating
+     * @param string $default
+     * @param bool $isSecure
      * @return string
      */
     public static function gravatarUrl($mail, $size, $rating, $default, $isSecure = false)
@@ -1027,9 +1034,9 @@ EOF;
     }
 
     /**
-     * 给javascript赋值加入扰码设计 
-     * 
-     * @param string $value 
+     * 给javascript赋值加入扰码设计
+     *
+     * @param string $value
      * @return string
      */
     public static function shuffleScriptVar($value)
@@ -1159,7 +1166,7 @@ EOF;
             return false;
         }
 
-        list ($type, $headerLen, $bodyLen) = array_values(unpack($version == 'FILE' ? 'v3' : 'v1type/v1headerLen/V1bodyLen', $meta));
+        list($type, $headerLen, $bodyLen) = array_values(unpack($version == 'FILE' ? 'v3' : 'v1type/v1headerLen/V1bodyLen', $meta));
 
         $header = @fread($fp, $headerLen);
         $offset += $headerLen;
@@ -1170,7 +1177,7 @@ EOF;
 
         if ('FILE' == $version) {
             $bodyLen = array_reduce(json_decode($header, true), function ($carry, $len) {
-                return NULL === $len ? $carry : $carry + $len;
+                return null === $len ? $carry : $carry + $len;
             }, 0);
         }
 
@@ -1232,7 +1239,7 @@ EOF;
             $long = ip2long($address);
 
             foreach ($privateNetworks as $network) {
-                list ($from, $to) = explode('|', $network);
+                list($from, $to) = explode('|', $network);
 
                 if ($long >= ip2long($from) && $long <= ip2long($to)) {
                     return false;
@@ -1617,7 +1624,7 @@ EOF;
             return 'unknown';
         }
 
-        list ($type, $stream) = $parts;
+        list($type, $stream) = $parts;
 
         if (in_array($type, array('image', 'video', 'audio', 'text', 'application'))) {
             switch (true) {

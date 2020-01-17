@@ -1,5 +1,7 @@
 <?php
-if (!defined('__TYPECHO_ROOT_DIR__')) exit;
+if (!defined('__TYPECHO_ROOT_DIR__')) {
+    exit;
+}
 /**
  * Typecho Blog Platform
  *
@@ -78,7 +80,7 @@ class Widget_Abstract_Contents extends Widget_Abstract
 
     /**
      * ___fields
-     * 
+     *
      * @access protected
      * @return Typecho_Config
      */
@@ -170,7 +172,7 @@ class Widget_Abstract_Contents extends Widget_Abstract
     
     /**
      * 回复框id
-     * 
+     *
      * @access protected
      * @return string
      */
@@ -181,7 +183,7 @@ class Widget_Abstract_Contents extends Widget_Abstract
     
     /**
      * 评论地址
-     * 
+     *
      * @access protected
      * @return string
      */
@@ -189,25 +191,31 @@ class Widget_Abstract_Contents extends Widget_Abstract
     {
         /** 生成反馈地址 */
         /** 评论 */
-        return Typecho_Router::url('feedback',
-            array('type' => 'comment', 'permalink' => $this->pathinfo), $this->options->index);
+        return Typecho_Router::url(
+            'feedback',
+            array('type' => 'comment', 'permalink' => $this->pathinfo),
+            $this->options->index
+        );
     }
     
     /**
      * trackback地址
-     * 
+     *
      * @access protected
      * @return string
      */
     protected function ___trackbackUrl()
     {
-        return Typecho_Router::url('feedback',
-            array('type' => 'trackback', 'permalink' => $this->pathinfo), $this->options->index);
+        return Typecho_Router::url(
+            'feedback',
+            array('type' => 'trackback', 'permalink' => $this->pathinfo),
+            $this->options->index
+        );
     }
     
     /**
      * 回复地址
-     * 
+     *
      * @access protected
      * @return string
      */
@@ -228,12 +236,16 @@ class Widget_Abstract_Contents extends Widget_Abstract
      * @param integer $pageSize 分页值
      * @return integer
      */
-    protected function getPageOffset($column, $offset, $type, $status = NULL, $authorId = 0, $pageSize = 20)
+    protected function getPageOffset($column, $offset, $type, $status = null, $authorId = 0, $pageSize = 20)
     {
         $select = $this->db->select(array('COUNT(table.contents.cid)' => 'num'))->from('table.contents')
         ->where("table.contents.{$column} > {$offset}")
-        ->where("table.contents.type = ? OR (table.contents.type = ? AND table.contents.parent = ?)",
-            $type, $type . '_draft', 0);
+        ->where(
+            "table.contents.type = ? OR (table.contents.type = ? AND table.contents.parent = ?)",
+            $type,
+            $type . '_draft',
+            0
+        );
 
         if (!empty($status)) {
             $select->where("table.contents.status = ?", $status);
@@ -255,10 +267,25 @@ class Widget_Abstract_Contents extends Widget_Abstract
      */
     public function select()
     {
-        return $this->db->select('table.contents.cid', 'table.contents.title', 'table.contents.slug', 'table.contents.created', 'table.contents.authorId',
-        'table.contents.modified', 'table.contents.type', 'table.contents.status', 'table.contents.text', 'table.contents.commentsNum', 'table.contents.order',
-        'table.contents.template', 'table.contents.password', 'table.contents.allowComment', 'table.contents.allowPing', 'table.contents.allowFeed',
-        'table.contents.parent')->from('table.contents');
+        return $this->db->select(
+            'table.contents.cid',
+            'table.contents.title',
+            'table.contents.slug',
+            'table.contents.created',
+            'table.contents.authorId',
+            'table.contents.modified',
+            'table.contents.type',
+            'table.contents.status',
+            'table.contents.text',
+            'table.contents.commentsNum',
+            'table.contents.order',
+            'table.contents.template',
+            'table.contents.password',
+            'table.contents.allowComment',
+            'table.contents.allowPing',
+            'table.contents.allowFeed',
+            'table.contents.parent'
+        )->from('table.contents');
     }
 
     /**
@@ -272,16 +299,16 @@ class Widget_Abstract_Contents extends Widget_Abstract
     {
         /** 构建插入结构 */
         $insertStruct = array(
-            'title'         =>  !isset($content['title']) || strlen($content['title']) === 0 ? NULL : htmlspecialchars($content['title']),
+            'title'         =>  !isset($content['title']) || strlen($content['title']) === 0 ? null : htmlspecialchars($content['title']),
             'created'       =>  !isset($content['created']) ? $this->options->time : $content['created'],
             'modified'      =>  $this->options->time,
-            'text'          =>  !isset($content['text']) || strlen($content['text']) === 0 ? NULL : $content['text'],
+            'text'          =>  !isset($content['text']) || strlen($content['text']) === 0 ? null : $content['text'],
             'order'         =>  empty($content['order']) ? 0 : intval($content['order']),
             'authorId'      =>  isset($content['authorId']) ? $content['authorId'] : $this->user->uid,
-            'template'      =>  empty($content['template']) ? NULL : $content['template'],
+            'template'      =>  empty($content['template']) ? null : $content['template'],
             'type'          =>  empty($content['type']) ? 'post' : $content['type'],
             'status'        =>  empty($content['status']) ? 'publish' : $content['status'],
-            'password'      =>  !isset($content['password']) || strlen($content['password']) === 0 ? NULL : $content['password'],
+            'password'      =>  !isset($content['password']) || strlen($content['password']) === 0 ? null : $content['password'],
             'commentsNum'   =>  empty($content['commentsNum']) ? 0 : $content['commentsNum'],
             'allowComment'  =>  !empty($content['allowComment']) && 1 == $content['allowComment'] ? 1 : 0,
             'allowPing'     =>  !empty($content['allowPing']) && 1 == $content['allowPing'] ? 1 : 0,
@@ -298,7 +325,7 @@ class Widget_Abstract_Contents extends Widget_Abstract
 
         /** 更新缩略名 */
         if ($insertId > 0) {
-            $this->applySlug(!isset($content['slug']) || strlen($content['slug']) === 0 ? NULL : $content['slug'], $insertId);
+            $this->applySlug(!isset($content['slug']) || strlen($content['slug']) === 0 ? null : $content['slug'], $insertId);
         }
 
         return $insertId;
@@ -321,13 +348,13 @@ class Widget_Abstract_Contents extends Widget_Abstract
 
         /** 构建更新结构 */
         $preUpdateStruct = array(
-            'title'         =>  !isset($content['title']) || strlen($content['title']) === 0 ? NULL : htmlspecialchars($content['title']),
+            'title'         =>  !isset($content['title']) || strlen($content['title']) === 0 ? null : htmlspecialchars($content['title']),
             'order'         =>  empty($content['order']) ? 0 : intval($content['order']),
-            'text'          =>  !isset($content['text']) || strlen($content['text']) === 0 ? NULL : $content['text'],
-            'template'      =>  empty($content['template']) ? NULL : $content['template'],
+            'text'          =>  !isset($content['text']) || strlen($content['text']) === 0 ? null : $content['text'],
+            'template'      =>  empty($content['template']) ? null : $content['template'],
             'type'          =>  empty($content['type']) ? 'post' : $content['type'],
             'status'        =>  empty($content['status']) ? 'publish' : $content['status'],
-            'password'      =>  empty($content['password']) ? NULL : $content['password'],
+            'password'      =>  empty($content['password']) ? null : $content['password'],
             'allowComment'  =>  !empty($content['allowComment']) && 1 == $content['allowComment'] ? 1 : 0,
             'allowPing'     =>  !empty($content['allowPing']) && 1 == $content['allowPing'] ? 1 : 0,
             'allowFeed'     =>  !empty($content['allowFeed']) && 1 == $content['allowFeed'] ? 1 : 0,
@@ -354,7 +381,7 @@ class Widget_Abstract_Contents extends Widget_Abstract
 
         /** 更新缩略名 */
         if ($updateRows > 0 && isset($content['slug'])) {
-            $this->applySlug(!isset($content['slug']) || strlen($content['slug']) === 0 ? NULL : $content['slug'], $updateCondition);
+            $this->applySlug(!isset($content['slug']) || strlen($content['slug']) === 0 ? null : $content['slug'], $updateCondition);
         }
 
         return $updateRows;
@@ -416,8 +443,8 @@ class Widget_Abstract_Contents extends Widget_Abstract
 
     /**
      * 删除自定义字段
-     * 
-     * @param integer $cid 
+     *
+     * @param integer $cid
      * @access public
      * @return integer
      */
@@ -428,9 +455,9 @@ class Widget_Abstract_Contents extends Widget_Abstract
     }
 
     /**
-     * 检查字段名是否符合要求  
-     * 
-     * @param string $name 
+     * 检查字段名是否符合要求
+     *
+     * @param string $name
      * @access public
      * @return boolean
      */
@@ -440,10 +467,10 @@ class Widget_Abstract_Contents extends Widget_Abstract
     }
 
     /**
-     * 保存自定义字段 
-     * 
-     * @param array $fields 
-     * @param mixed $cid 
+     * 保存自定义字段
+     *
+     * @param array $fields
+     * @param mixed $cid
      * @access public
      * @return void
      */
@@ -458,8 +485,8 @@ class Widget_Abstract_Contents extends Widget_Abstract
             if (is_array($value) && 2 == count($value)) {
                 $type = $value[0];
                 $value = $value[1];
-            } else if (strpos($name, ':') > 0) {
-                list ($type, $name) = explode(':', $name, 2);
+            } elseif (strpos($name, ':') > 0) {
+                list($type, $name) = explode(':', $name, 2);
             }
 
             if (!$this->checkFieldName($name)) {
@@ -486,17 +513,17 @@ class Widget_Abstract_Contents extends Widget_Abstract
 
     /**
      * 设置单个字段
-     * 
-     * @param string $name 
-     * @param string $type 
-     * @param string $value 
-     * @param integer $cid 
+     *
+     * @param string $name
+     * @param string $type
+     * @param string $value
+     * @param integer $cid
      * @access public
      * @return integer
      */
     public function setField($name, $type, $value, $cid)
     {
-        if (empty($name) || !$this->checkFieldName($name) 
+        if (empty($name) || !$this->checkFieldName($name)
             || !in_array($type, array('str', 'int', 'float'))) {
             return false;
         }
@@ -510,7 +537,7 @@ class Widget_Abstract_Contents extends Widget_Abstract
                     'cid'           =>  $cid,
                     'name'          =>  $name,
                     'type'          =>  $type,
-                    'str_value'     =>  'str' == $type ? $value : NULL,
+                    'str_value'     =>  'str' == $type ? $value : null,
                     'int_value'     =>  'int' == $type ? intval($value) : 0,
                     'float_value'   =>  'float' == $type ? floatval($value) : 0
                 )));
@@ -518,7 +545,7 @@ class Widget_Abstract_Contents extends Widget_Abstract
             return $this->db->query($this->db->update('table.fields')
                 ->rows(array(
                     'type'          =>  $type,
-                    'str_value'     =>  'str' == $type ? $value : NULL,
+                    'str_value'     =>  'str' == $type ? $value : null,
                     'int_value'     =>  'int' == $type ? intval($value) : 0,
                     'float_value'   =>  'float' == $type ? floatval($value) : 0
                 ))
@@ -528,10 +555,10 @@ class Widget_Abstract_Contents extends Widget_Abstract
 
     /**
      * 自增一个整形字段
-     * 
-     * @param string $name 
-     * @param integer $value 
-     * @param integer $cid 
+     *
+     * @param string $name
+     * @param integer $value
+     * @param integer $cid
      * @access public
      * @return integer
      */
@@ -551,14 +578,14 @@ class Widget_Abstract_Contents extends Widget_Abstract
                     'cid'           =>  $cid,
                     'name'          =>  $name,
                     'type'          =>  'int',
-                    'str_value'     =>  NULL,
+                    'str_value'     =>  null,
                     'int_value'     =>  $value,
                     'float_value'   =>  0
                 )));
         } else {
             $struct = array(
-                'str_value'     =>  NULL,
-                'float_value'   =>  NULL
+                'str_value'     =>  null,
+                'float_value'   =>  null
             );
 
             if ('int' != $exist['type']) {
@@ -640,7 +667,7 @@ class Widget_Abstract_Contents extends Widget_Abstract
             ->where('table.relationships.cid = ?', $value['cid'])
             ->where('table.metas.type = ?', 'category'), array($this->widget('Widget_Metas_Category_List'), 'filter'));
 
-        $value['category'] = NULL;
+        $value['category'] = null;
         $value['directory'] = array();
 
         /** 取出第一个分类作为slug条件 */
@@ -673,7 +700,7 @@ class Widget_Abstract_Contents extends Widget_Abstract
 
         /** 获取路由类型并判断此类型在路由表中是否存在 */
         $type = $value['type'];
-        $routeExists = (NULL != Typecho_Router::get($type));
+        $routeExists = (null != Typecho_Router::get($type));
 
         $tmpSlug = $value['slug'];
         $tmpCategory = $value['category'];
@@ -731,7 +758,7 @@ class Widget_Abstract_Contents extends Widget_Abstract
         /** 处理密码保护流程 */
         if (strlen($value['password']) > 0 &&
         $value['password'] !== Typecho_Cookie::get('protectPassword_' . $value['cid']) &&
-        $value['authorId'] != $this->user->uid && 
+        $value['authorId'] != $this->user->uid &&
         !$this->user->pass('editor', true)) {
             $value['hidden'] = true;
 
@@ -780,7 +807,7 @@ class Widget_Abstract_Contents extends Widget_Abstract
      * @access public
      * @param string $format 日期格式
      */
-    public function date($format = NULL)
+    public function date($format = null)
     {
         echo $this->date->format(empty($format) ? $this->options->postDateFormat : $format);
     }
@@ -883,7 +910,7 @@ class Widget_Abstract_Contents extends Widget_Abstract
      * @param string $default 如果没有则输出
      * @return void
      */
-    public function category($split = ',', $link = true, $default = NULL)
+    public function category($split = ',', $link = true, $default = null)
     {
         $categories = $this->categories;
         if ($categories) {
@@ -909,7 +936,7 @@ class Widget_Abstract_Contents extends Widget_Abstract
      * @param string $default 如果没有则输出
      * @return void
      */
-    public function directory($split = '/', $link = true, $default = NULL)
+    public function directory($split = '/', $link = true, $default = null)
     {
         $category = $this->categories[0];
         $directory = $this->widget('Widget_Metas_Category_List')->getAllParents($category['mid']);
@@ -938,7 +965,7 @@ class Widget_Abstract_Contents extends Widget_Abstract
      * @param string $default 如果没有则输出
      * @return void
      */
-    public function tags($split = ',', $link = true, $default = NULL)
+    public function tags($split = ',', $link = true, $default = null)
     {
         /** 取出tags */
         if ($this->tags) {
@@ -967,9 +994,9 @@ class Widget_Abstract_Contents extends Widget_Abstract
     }
 
     /**
-     * autoP 
-     * 
-     * @param mixed $text 
+     * autoP
+     *
+     * @param mixed $text
      * @access public
      * @return string
      */
@@ -991,9 +1018,9 @@ class Widget_Abstract_Contents extends Widget_Abstract
     }
 
     /**
-     * markdown  
-     * 
-     * @param mixed $text 
+     * markdown
+     *
+     * @param mixed $text
      * @access public
      * @return string
      */
@@ -1008,4 +1035,3 @@ class Widget_Abstract_Contents extends Widget_Abstract
         return $html;
     }
 }
-

@@ -98,7 +98,7 @@ class Typecho_Validate
      * @return	array
      * @throws  Typecho_Validate_Exception
      */
-    public function run(array $data, $rules = NULL)
+    public function run(array $data, $rules = null)
     {
         $result = array();
         $this->_data = $data;
@@ -108,7 +108,7 @@ class Typecho_Validate
         foreach ($rules as $key => $rules) {
             $this->_key = $key;
             $data[$key] = (is_array($data[$key]) ? 0 == count($data[$key])
-                : 0 == strlen($data[$key])) ? NULL : $data[$key];
+                : 0 == strlen($data[$key])) ? null : $data[$key];
 
             foreach ($rules as $params) {
                 $method = $params[0];
