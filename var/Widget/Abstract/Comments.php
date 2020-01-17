@@ -1,5 +1,7 @@
 <?php
-if (!defined('__TYPECHO_ROOT_DIR__')) exit;
+if (!defined('__TYPECHO_ROOT_DIR__')) {
+    exit;
+}
 /**
  * Typecho Blog Platform
  *
@@ -50,16 +52,14 @@ class Widget_Abstract_Comments extends Widget_Abstract
      */
     protected function ___permalink()
     {
-
         if ($this->options->commentsPageBreak && 'approved' == $this->status) {
-            
             $coid = $this->coid;
             $parent = $this->parent;
-            
+
             while ($parent > 0 && $this->options->commentsThreaded) {
                 $parentRows = $this->db->fetchRow($this->db->select('parent')->from('table.comments')
                 ->where('coid = ? AND status = ?', $parent, 'approved')->limit(1));
-                
+
                 if (!empty($parentRows)) {
                     $coid = $parent;
                     $parent = $parentRows['parent'];
@@ -76,27 +76,30 @@ class Widget_Abstract_Comments extends Widget_Abstract
             if ($this->options->commentsShowCommentOnly) {
                 $select->where('type = ?', 'comment');
             }
-            
+
             $comments = $this->db->fetchAll($select);
-            
+
             $commentsMap = array();
             $total = 0;
-            
+
             foreach ($comments as $comment) {
                 $commentsMap[$comment['coid']] = $comment['parent'];
-                
+
                 if (0 == $comment['parent'] || !isset($commentsMap[$comment['parent']])) {
                     $total ++;
                 }
             }
 
             $currentPage = ceil($total / $this->options->commentsPageSize);
-            
+
             $pageRow = array('permalink' => $this->parentContent['pathinfo'], 'commentPage' => $currentPage);
-            return Typecho_Router::url('comment_page',
-                        $pageRow, $this->options->index) . '#' . $this->theId;
+            return Typecho_Router::url(
+                'comment_page',
+                $pageRow,
+                $this->options->index
+            ) . '#' . $this->theId;
         }
-        
+
         return $this->parentContent['permalink'] . '#' . $this->theId;
     }
 
@@ -150,8 +153,22 @@ class Widget_Abstract_Comments extends Widget_Abstract
      */
     public function select()
     {
-        return $this->db->select('table.comments.coid', 'table.comments.cid', 'table.comments.author', 'table.comments.mail', 'table.comments.url', 'table.comments.ip',
-        'table.comments.authorId', 'table.comments.ownerId', 'table.comments.agent', 'table.comments.text', 'table.comments.type', 'table.comments.status', 'table.comments.parent', 'table.comments.created')
+        return $this->db->select(
+            'table.comments.coid',
+            'table.comments.cid',
+            'table.comments.author',
+            'table.comments.mail',
+            'table.comments.url',
+            'table.comments.ip',
+            'table.comments.authorId',
+            'table.comments.ownerId',
+            'table.comments.agent',
+            'table.comments.text',
+            'table.comments.type',
+            'table.comments.status',
+            'table.comments.parent',
+            'table.comments.created'
+        )
         ->from('table.comments');
     }
 
@@ -168,14 +185,14 @@ class Widget_Abstract_Comments extends Widget_Abstract
         $insertStruct = array(
             'cid'       =>  $comment['cid'],
             'created'   =>  empty($comment['created']) ? $this->options->time : $comment['created'],
-            'author'    =>  !isset($comment['author']) || strlen($comment['author']) === 0 ? NULL : $comment['author'],
+            'author'    =>  !isset($comment['author']) || strlen($comment['author']) === 0 ? null : $comment['author'],
             'authorId'  =>  empty($comment['authorId']) ? 0 : $comment['authorId'],
             'ownerId'   =>  empty($comment['ownerId']) ? 0 : $comment['ownerId'],
-            'mail'      =>  !isset($comment['mail']) || strlen($comment['mail']) === 0 ? NULL : $comment['mail'],
-            'url'       =>  !isset($comment['url']) || strlen($comment['url']) === 0 ? NULL : $comment['url'],
+            'mail'      =>  !isset($comment['mail']) || strlen($comment['mail']) === 0 ? null : $comment['mail'],
+            'url'       =>  !isset($comment['url']) || strlen($comment['url']) === 0 ? null : $comment['url'],
             'ip'        =>  !isset($comment['ip']) || strlen($comment['ip']) === 0 ? $this->request->getIp() : $comment['ip'],
             'agent'     =>  !isset($comment['agent']) || strlen($comment['agent']) === 0 ? $_SERVER["HTTP_USER_AGENT"] : $comment['agent'],
-            'text'      =>  !isset($comment['text']) || strlen($comment['text']) === 0 ? NULL : $comment['text'],
+            'text'      =>  !isset($comment['text']) || strlen($comment['text']) === 0 ? null : $comment['text'],
             'type'      =>  empty($comment['type']) ? 'comment' : $comment['type'],
             'status'    =>  empty($comment['status']) ? 'approved' : $comment['status'],
             'parent'    =>  empty($comment['parent']) ? 0 : $comment['parent'],
@@ -225,10 +242,10 @@ class Widget_Abstract_Comments extends Widget_Abstract
 
         /** 构建插入结构 */
         $preUpdateStruct = array(
-            'author'    =>  !isset($comment['author']) || strlen($comment['author']) === 0 ? NULL : $comment['author'],
-            'mail'      =>  !isset($comment['mail']) || strlen($comment['mail']) === 0 ? NULL : $comment['mail'],
-            'url'       =>  !isset($comment['url']) || strlen($comment['url']) === 0 ? NULL : $comment['url'],
-            'text'      =>  !isset($comment['text']) || strlen($comment['text']) === 0 ? NULL : $comment['text'],
+            'author'    =>  !isset($comment['author']) || strlen($comment['author']) === 0 ? null : $comment['author'],
+            'mail'      =>  !isset($comment['mail']) || strlen($comment['mail']) === 0 ? null : $comment['mail'],
+            'url'       =>  !isset($comment['url']) || strlen($comment['url']) === 0 ? null : $comment['url'],
+            'text'      =>  !isset($comment['text']) || strlen($comment['text']) === 0 ? null : $comment['text'],
             'status'    =>  empty($comment['status']) ? 'approved' : $comment['status'],
         );
 
@@ -238,7 +255,7 @@ class Widget_Abstract_Comments extends Widget_Abstract
                 $updateStruct[$key] = $preUpdateStruct[$key];
             }
         }
-        
+
         /** 更新创建时间 */
         if (!empty($comment['created'])) {
             $updateStruct['created'] = $comment['created'];
@@ -296,7 +313,7 @@ class Widget_Abstract_Comments extends Widget_Abstract
      * @param Typecho_Db_Query $condition 条件
      * @return mixed
      */
-    public function commentIsWriteable(Typecho_Db_Query $condition = NULL)
+    public function commentIsWriteable(Typecho_Db_Query $condition = null)
     {
         if (empty($condition)) {
             if ($this->have() && ($this->user->pass('editor', true) || $this->ownerId == $this->user->uid)) {
@@ -359,7 +376,7 @@ class Widget_Abstract_Comments extends Widget_Abstract
      * @param string $format 日期格式
      * @return void
      */
-    public function date($format = NULL)
+    public function date($format = null)
     {
         echo $this->date->format(empty($format) ? $this->options->commentDateFormat : $format);
     }
@@ -372,13 +389,13 @@ class Widget_Abstract_Comments extends Widget_Abstract
      * @param boolean $noFollow 是否加上nofollow标签
      * @return void
      */
-    public function author($autoLink = NULL, $noFollow = NULL)
+    public function author($autoLink = null, $noFollow = null)
     {
-        $autoLink = (NULL === $autoLink) ? $this->options->commentsShowUrl : $autoLink;
-        $noFollow = (NULL === $noFollow) ? $this->options->commentsUrlNofollow : $noFollow;
+        $autoLink = (null === $autoLink) ? $this->options->commentsShowUrl : $autoLink;
+        $noFollow = (null === $noFollow) ? $this->options->commentsUrlNofollow : $noFollow;
 
         if ($this->url && $autoLink) {
-            echo '<a href="' , $this->url , '"' , ($noFollow ? ' rel="external nofollow"' : NULL) , '>' , $this->author , '</a>';
+            echo '<a href="' , $this->url , '"' , ($noFollow ? ' rel="external nofollow"' : null) , '>' , $this->author , '</a>';
         } else {
             echo $this->author;
         }
@@ -392,11 +409,11 @@ class Widget_Abstract_Comments extends Widget_Abstract
      * @param string $default 默认输出头像
      * @return void
      */
-    public function gravatar($size = 32, $default = NULL)
+    public function gravatar($size = 32, $default = null)
     {
         if ($this->options->commentsAvatar && 'comment' == $this->type) {
             $rating = $this->options->commentsAvatarRating;
-            
+
             $this->pluginHandle(__CLASS__)->trigger($plugged)->gravatar($size, $rating, $default, $this);
             if (!$plugged) {
                 $url = Typecho_Common::gravatarUrl($this->mail, $size, $rating, $default, $this->request->isSecure());
@@ -420,9 +437,9 @@ class Widget_Abstract_Comments extends Widget_Abstract
     }
 
     /**
-     * autoP 
-     * 
-     * @param mixed $text 
+     * autoP
+     *
+     * @param mixed $text
      * @access public
      * @return string
      */
@@ -444,9 +461,9 @@ class Widget_Abstract_Comments extends Widget_Abstract
     }
 
     /**
-     * markdown  
-     * 
-     * @param mixed $text 
+     * markdown
+     *
+     * @param mixed $text
      * @access public
      * @return string
      */
@@ -461,4 +478,3 @@ class Widget_Abstract_Comments extends Widget_Abstract
         return $html;
     }
 }
-

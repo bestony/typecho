@@ -1,4 +1,6 @@
-<?php if(!defined('__TYPECHO_ADMIN__')) exit; ?>
+<?php if (!defined('__TYPECHO_ADMIN__')) {
+    exit;
+} ?>
 <script src="<?php $options->adminStaticUrl('js', 'jquery.js?v=' . $suffixVersion); ?>"></script>
 <script src="<?php $options->adminStaticUrl('js', 'jquery-ui.js?v=' . $suffixVersion); ?>"></script>
 <script src="<?php $options->adminStaticUrl('js', 'typecho.js?v=' . $suffixVersion); ?>"></script>
@@ -18,7 +20,7 @@
                 if (!!cookies.notice && 'success|notice|error'.indexOf(cookies.noticeType) >= 0) {
                     var head = $('.typecho-head-nav'),
                         p = $('<div class="message popup ' + cookies.noticeType + '">'
-                        + '<ul><li>' + $.parseJSON(cookies.notice).join('</li><li>') 
+                        + '<ul><li>' + $.parseJSON(cookies.notice).join('</li><li>')
                         + '</li></ul></div>'), offset = 0;
 
                     if (head.length > 0) {
@@ -50,7 +52,7 @@
 
                     p.slideDown(function () {
                         var t = $(this), color = '#C6D880';
-                        
+
                         if (t.hasClass('error')) {
                             color = '#FBC2C4';
                         } else if (t.hasClass('notice')) {
@@ -63,7 +65,7 @@
                         });
                     });
 
-                    
+
                     $.cookie(prefix + '__typecho_notice', null, {path : path});
                     $.cookie(prefix + '__typecho_notice_type', null, {path : path});
                 }
@@ -92,7 +94,7 @@
                     var t = $(this), href = t.attr('href');
 
                     if ((href && href[0] == '#')
-                        || /^<?php echo preg_quote($options->adminUrl, '/'); ?>.*$/.exec(href) 
+                        || /^<?php echo preg_quote($options->adminUrl, '/'); ?>.*$/.exec(href)
                             || /^<?php echo substr(preg_quote(Typecho_Common::url('s', $options->index), '/'), 0, -1); ?>action\/[_a-zA-Z0-9\/]+.*$/.exec(href)) {
                         return;
                     }

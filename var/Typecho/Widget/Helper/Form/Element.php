@@ -1,5 +1,7 @@
 <?php
-if (!defined('__TYPECHO_ROOT_DIR__')) exit;
+if (!defined('__TYPECHO_ROOT_DIR__')) {
+    exit;
+}
 /**
  * 表单元素抽象帮手
  *
@@ -69,8 +71,8 @@ abstract class Typecho_Widget_Helper_Form_Element extends Typecho_Widget_Helper_
     public $input;
 
     /**
-     * inputs  
-     * 
+     * inputs
+     *
      * @var array
      * @access public
      */
@@ -119,7 +121,7 @@ abstract class Typecho_Widget_Helper_Form_Element extends Typecho_Widget_Helper_
      * @param string $description 表单描述
      * @return void
      */
-    public function __construct($name = NULL, array $options = NULL, $value = NULL, $label = NULL, $description = NULL)
+    public function __construct($name = null, array $options = null, $value = null, $label = null, $description = null)
     {
         /** 创建html元素,并设置class */
         parent::__construct('ul', array('class' => 'typecho-option', 'id' => 'typecho-option-item-' . $name . '-' . self::$uniqueId));
@@ -130,7 +132,7 @@ abstract class Typecho_Widget_Helper_Form_Element extends Typecho_Widget_Helper_
         $this->init();
 
         /** 初始化表单标题 */
-        if (NULL !== $label) {
+        if (null !== $label) {
             $this->label($label);
         }
 
@@ -138,20 +140,20 @@ abstract class Typecho_Widget_Helper_Form_Element extends Typecho_Widget_Helper_
         $this->input = $this->input($name, $options);
 
         /** 初始化表单值 */
-        if (NULL !== $value) {
+        if (null !== $value) {
             $this->value($value);
         }
 
         /** 初始化表单描述 */
-        if (NULL !== $description) {
+        if (null !== $description) {
             $this->description($description);
         }
     }
 
     /**
-     * filterValue  
-     * 
-     * @param mixed $value 
+     * filterValue
+     *
+     * @param mixed $value
      * @access protected
      * @return string
      */
@@ -170,7 +172,9 @@ abstract class Typecho_Widget_Helper_Form_Element extends Typecho_Widget_Helper_
      * @access public
      * @return void
      */
-    public function init(){}
+    public function init()
+    {
+    }
 
     /**
      * 创建表单标题
@@ -192,10 +196,10 @@ abstract class Typecho_Widget_Helper_Form_Element extends Typecho_Widget_Helper_
     }
 
     /**
-     * 在容器里增加元素
+     * 在容器里增加元�
      *
      * @access public
-     * @param Typecho_Widget_Helper_Layout $item 表单元素
+     * @param Typecho_Widget_Helper_Layout $item 表单元�
      * @return $this
      */
     public function container(Typecho_Widget_Helper_Layout $item)
@@ -297,7 +301,7 @@ abstract class Typecho_Widget_Helper_Form_Element extends Typecho_Widget_Helper_
      * @param array $options 选择项
      * @return Typecho_Widget_Helper_Form_Element
      */
-    abstract public function input($name = NULL, array $options = NULL);
+    abstract public function input($name = null, array $options = null);
 
     /**
      * 设置表单元素值

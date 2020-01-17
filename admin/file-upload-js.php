@@ -1,8 +1,10 @@
-<?php if(!defined('__TYPECHO_ADMIN__')) exit; ?>
+<?php if (!defined('__TYPECHO_ADMIN__')) {
+    exit;
+} ?>
 <?php
 if (isset($post) && $post instanceof Typecho_Widget && $post->have()) {
     $fileParentContent = $post;
-} else if (isset($page) && $page instanceof Typecho_Widget && $page->have()) {
+} elseif (isset($page) && $page instanceof Typecho_Widget && $page->have()) {
     $fileParentContent = $page;
 }
 
@@ -46,7 +48,7 @@ $(document).ready(function() {
         drop        :   function () {
             $(this).parent().removeClass('drag');
         },
-        
+
         dragend     :   function () {
             $(this).parent().removeClass('drag');
         },
@@ -64,8 +66,8 @@ $(document).ready(function() {
     }
 
     function fileUploadError (error) {
-        var file = error.file, code = error.code, word; 
-        
+        var file = error.file, code = error.code, word;
+
         switch (code) {
             case plupload.FILE_SIZE_ERROR:
                 word = '<?php _e('文件大小超过限制'); ?>';
@@ -106,11 +108,11 @@ $(document).ready(function() {
             .data('image', data.isImage)
             .html('<input type="hidden" name="attachment[]" value="' + data.cid + '" />'
                 + '<a class="insert" target="_blank" href="###" title="<?php _e('点击插入文件'); ?>">' + data.title + '</a><div class="info">' + data.bytes
-                + ' <a class="file" target="_blank" href="<?php $options->adminUrl('media.php'); ?>?cid=' 
+                + ' <a class="file" target="_blank" href="<?php $options->adminUrl('media.php'); ?>?cid='
                 + data.cid + '" title="<?php _e('编辑'); ?>"><i class="i-edit"></i></a>'
                 + ' <a class="delete" href="###" title="<?php _e('删除'); ?>"><i class="i-delete"></i></a></div>')
             .effect('highlight', 1000);
-            
+
         attachInsertEvent(li);
         attachDeleteEvent(li);
         updateAttacmentNumber();
@@ -180,7 +182,7 @@ $(document).ready(function() {
         if (!uploader) {
             $('#tab-files-btn').parent().trigger('click');
         }
-        
+
         var timer = setInterval(function () {
             if (!uploader) {
                 return;
@@ -226,4 +228,3 @@ $(document).ready(function() {
     });
 });
 </script>
-

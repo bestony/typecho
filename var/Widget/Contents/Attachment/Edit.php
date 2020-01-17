@@ -1,7 +1,9 @@
 <?php
-if (!defined('__TYPECHO_ROOT_DIR__')) exit;
+if (!defined('__TYPECHO_ROOT_DIR__')) {
+    exit;
+}
 /**
- * 编辑文章
+ * 编辑文�
  *
  * @category typecho
  * @package Widget
@@ -29,10 +31,15 @@ class Widget_Contents_Attachment_Edit extends Widget_Contents_Post_Edit implemen
      * @param string $status 状态
      * @return string
      */
-    protected function getPageOffsetQuery($cid, $status = NULL)
+    protected function getPageOffsetQuery($cid, $status = null)
     {
-        return 'page=' . $this->getPageOffset('cid', $cid, 'attachment', $status,
-        $this->user->pass('editor', true) ? 0 : $this->user->uid);
+        return 'page=' . $this->getPageOffset(
+            'cid',
+            $cid,
+            'attachment',
+            $status,
+            $this->user->pass('editor', true) ? 0 : $this->user->uid
+        );
     }
 
     /**
@@ -56,7 +63,7 @@ class Widget_Contents_Attachment_Edit extends Widget_Contents_Post_Edit implemen
 
             if (!$this->have()) {
                 throw new Typecho_Widget_Exception(_t('文件不存在'), 404);
-            } else if ($this->have() && !$this->allow('edit')) {
+            } elseif ($this->have() && !$this->allow('edit')) {
                 throw new Typecho_Widget_Exception(_t('没有编辑权限'), 403);
             }
         }
@@ -113,33 +120,45 @@ class Widget_Contents_Attachment_Edit extends Widget_Contents_Post_Edit implemen
     public function form()
     {
         /** 构建表格 */
-        $form = new Typecho_Widget_Helper_Form($this->security->getIndex('/action/contents-attachment-edit'),
-        Typecho_Widget_Helper_Form::POST_METHOD);
+        $form = new Typecho_Widget_Helper_Form(
+            $this->security->getIndex('/action/contents-attachment-edit'),
+            Typecho_Widget_Helper_Form::POST_METHOD
+        );
 
         /** 文件名称 */
-        $name = new Typecho_Widget_Helper_Form_Element_Text('name', NULL, $this->title, _t('标题 *'));
+        $name = new Typecho_Widget_Helper_Form_Element_Text('name', null, $this->title, _t('标题 *'));
         $form->addInput($name);
 
         /** 文件缩略名 */
-        $slug = new Typecho_Widget_Helper_Form_Element_Text('slug', NULL, $this->slug, _t('缩略名'),
-        _t('文件缩略名用于创建友好的链接形式,建议使用字母,数字,下划线和横杠.'));
+        $slug = new Typecho_Widget_Helper_Form_Element_Text(
+            'slug',
+            null,
+            $this->slug,
+            _t('缩略名'),
+            _t('文件缩略名用于创建友好的链接形式,建议使用字母,数字,下划线和横杠.')
+        );
         $form->addInput($slug);
 
         /** 文件描述 */
-        $description =  new Typecho_Widget_Helper_Form_Element_Textarea('description', NULL, $this->attachment->description,
-        _t('描述'), _t('此文字用于描述文件,在有的主题中它会被显示.'));
+        $description =  new Typecho_Widget_Helper_Form_Element_Textarea(
+            'description',
+            null,
+            $this->attachment->description,
+            _t('描述'),
+            _t('此文字用于描述文件,在有的主题中它会被显示.')
+        );
         $form->addInput($description);
 
         /** 分类动作 */
-        $do = new Typecho_Widget_Helper_Form_Element_Hidden('do', NULL, 'update');
+        $do = new Typecho_Widget_Helper_Form_Element_Hidden('do', null, 'update');
         $form->addInput($do);
 
         /** 分类主键 */
-        $cid = new Typecho_Widget_Helper_Form_Element_Hidden('cid', NULL, $this->cid);
+        $cid = new Typecho_Widget_Helper_Form_Element_Hidden('cid', null, $this->cid);
         $form->addInput($cid);
 
         /** 提交按钮 */
-        $submit = new Typecho_Widget_Helper_Form_Element_Submit(NULL, NULL, _t('提交修改'));
+        $submit = new Typecho_Widget_Helper_Form_Element_Submit(null, null, _t('提交修改'));
         $submit->input->setAttribute('class', 'btn primary');
         $delete = new Typecho_Widget_Helper_Layout('a', array(
             'href'  => $this->security->getIndex('/action/contents-attachment-edit?do=delete&cid=' . $this->cid),
@@ -185,7 +204,6 @@ class Widget_Contents_Attachment_Edit extends Widget_Contents_Post_Edit implemen
         $updateRows = $this->update($attachment, $this->db->sql()->where('cid = ?', $cid));
 
         if ($updateRows > 0) {
-
             $this->db->fetchRow($this->select()
                 ->where('table.contents.type = ?', 'attachment')
                 ->where('table.contents.cid = ?', $cid)
@@ -198,7 +216,6 @@ class Widget_Contents_Attachment_Edit extends Widget_Contents_Post_Edit implemen
             $this->widget('Widget_Notice')->set('publish' == $this->status ?
             _t('文件 <a href="%s">%s</a> 已经被更新', $this->permalink, $this->title) :
             _t('未归档文件 %s 已经被更新', $this->title), 'success');
-
         }
 
         /** 转向原页 */
@@ -207,7 +224,7 @@ class Widget_Contents_Attachment_Edit extends Widget_Contents_Post_Edit implemen
     }
 
     /**
-     * 删除文章
+     * 删除文�
      *
      * @access public
      * @return void
@@ -249,8 +266,10 @@ class Widget_Contents_Attachment_Edit extends Widget_Contents_Post_Edit implemen
             : array('code' => 500, 'message' => _t('没有文件被删除')));
         } else {
             /** 设置提示信息 */
-            $this->widget('Widget_Notice')->set($deleteCount > 0 ? _t('文件已经被删除') : _t('没有文件被删除'), 
-            $deleteCount > 0 ? 'success' : 'notice');
+            $this->widget('Widget_Notice')->set(
+                $deleteCount > 0 ? _t('文件已经被删除') : _t('没有文件被删除'),
+                $deleteCount > 0 ? 'success' : 'notice'
+            );
 
             /** 返回原网页 */
             $this->response->redirect(Typecho_Common::url('manage-medias.php', $this->options->adminUrl));
@@ -258,8 +277,8 @@ class Widget_Contents_Attachment_Edit extends Widget_Contents_Post_Edit implemen
     }
 
     /**
-     * clearAttachment  
-     * 
+     * clearAttachment
+     *
      * @access public
      * @return void
      */
@@ -274,7 +293,7 @@ class Widget_Contents_Attachment_Edit extends Widget_Contents_Post_Edit implemen
                 ->where('type = ? AND parent = ?', 'attachment', 0)
                 ->page($page, 100)), 'cid');
             $page ++;
-            
+
             foreach ($posts as $post) {
                 // 删除插件接口
                 $this->pluginHandle()->delete($post, $this);
@@ -306,8 +325,10 @@ class Widget_Contents_Attachment_Edit extends Widget_Contents_Post_Edit implemen
         } while (count($posts) == 100);
 
         /** 设置提示信息 */
-        $this->widget('Widget_Notice')->set($deleteCount > 0 ? _t('未归档文件已经被清理') : _t('没有未归档文件被清理'), 
-            $deleteCount > 0 ? 'success' : 'notice');
+        $this->widget('Widget_Notice')->set(
+            $deleteCount > 0 ? _t('未归档文件已经被清理') : _t('没有未归档文件被清理'),
+            $deleteCount > 0 ? 'success' : 'notice'
+        );
 
         /** 返回原网页 */
         $this->response->redirect(Typecho_Common::url('manage-medias.php', $this->options->adminUrl));

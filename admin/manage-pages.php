@@ -33,7 +33,7 @@ $stat = Typecho_Widget::widget('Widget_Stat');
                         </div>
                     </form>
                 </div><!-- end .typecho-list-operate -->
-            
+
                 <form method="post" name="manage_pages" class="operate-form">
                 <div class="typecho-table-wrap">
                     <table class="typecho-list-table">
@@ -57,18 +57,18 @@ $stat = Typecho_Widget::widget('Widget_Stat');
                         </thead>
                         <tbody>
                         	<?php Typecho_Widget::widget('Widget_Contents_Page_Admin')->to($pages); ?>
-                        	<?php if($pages->have()): ?>
-                            <?php while($pages->next()): ?>
+                        	<?php if ($pages->have()): ?>
+                            <?php while ($pages->next()): ?>
                             <tr id="<?php $pages->theId(); ?>">
                                 <td><input type="checkbox" value="<?php $pages->cid(); ?>" name="cid[]"/></td>
                                 <td><a href="<?php $options->adminUrl('manage-comments.php?cid=' . $pages->cid); ?>" class="balloon-button size-<?php echo Typecho_Common::splitByCount($pages->commentsNum, 1, 10, 20, 50, 100); ?>" title="<?php $pages->commentsNum(); ?> <?php _e('评论'); ?>"><?php $pages->commentsNum(); ?></a></td>
                                 <td>
                                 <a href="<?php $options->adminUrl('write-page.php?cid=' . $pages->cid); ?>"><?php $pages->title(); ?></a>
-                                <?php 
+                                <?php
                                 if ($pages->hasSaved || 'page_draft' == $pages->type) {
                                     echo '<em class="status">' . _t('草稿') . '</em>';
                                 }
-                                
+
                                 if ('hidden' == $pages->status) {
                                     echo '<em class="status">' . _t('隐藏') . '</em>';
                                 }
@@ -112,7 +112,7 @@ include 'common-js.php';
 include 'table-js.php';
 ?>
 
-<?php if(!isset($request->status) || 'publish' == $request->get('status')): ?>
+<?php if (!isset($request->status) || 'publish' == $request->get('status')): ?>
 <script type="text/javascript">
 (function () {
     $(document).ready(function () {
