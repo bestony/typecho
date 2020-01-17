@@ -308,7 +308,7 @@ class Widget_Options extends Typecho_Widget
     {
         return isset($this->contentType) ? $this->contentType : 'text/html';
     }
-    
+
     /**
      * 软件名称
      *
@@ -320,7 +320,7 @@ class Widget_Options extends Typecho_Widget
         list($software, $version) = explode(' ', $this->generator);
         return $software;
     }
-    
+
     /**
      * 软件版本
      *
@@ -332,7 +332,7 @@ class Widget_Options extends Typecho_Widget
         list($software, $version) = explode(' ', $this->generator);
         return $version;
     }
-    
+
     /**
      * 允许上传的文件类型
      *
@@ -342,7 +342,7 @@ class Widget_Options extends Typecho_Widget
     protected function ___allowedAttachmentTypes()
     {
         $attachmentTypesResult = array();
-    
+
         if (null != $this->attachmentTypes) {
             $attachmentTypes = str_replace(
                 array('@image@', '@media@', '@doc@'),
@@ -350,10 +350,10 @@ class Widget_Options extends Typecho_Widget
                     'txt,doc,docx,xls,xlsx,ppt,pptx,zip,rar,pdf'),
                 $this->attachmentTypes
             );
-            
+
             $attachmentTypesResult = array_unique(array_map('trim', preg_split("/(,|\.)/", $attachmentTypes)));
         }
-        
+
         return $attachmentTypesResult;
     }
 
@@ -367,18 +367,18 @@ class Widget_Options extends Typecho_Widget
     {
         $this->db->fetchAll($this->db->select()->from('table.options')
         ->where('user = 0'), array($this, 'push'));
-        
+
         /** 支持皮肤变量重载 */
         if (!empty($this->row['theme:' . $this->row['theme']])) {
             $themeOptions = null;
-        
+
             /** 解析变量 */
             if ($themeOptions = unserialize($this->row['theme:' . $this->row['theme']])) {
                 /** 覆盖变量 */
                 $this->row = array_merge($this->row, $themeOptions);
             }
         }
-        
+
         $this->stack[] = &$this->row;
 
         /** 动态获取根目录 */

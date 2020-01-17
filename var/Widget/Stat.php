@@ -294,7 +294,7 @@ class Widget_Stat extends Typecho_Widget
                     ->where('table.comments.status = ?', 'spam')
                     ->where('table.comments.ownerId = ?', $this->user->uid))->num;
     }
-    
+
     /**
      * 获取当前文章的评论数目
      *
@@ -362,7 +362,7 @@ class Widget_Stat extends Typecho_Widget
                     ->from('table.metas')
                     ->where('table.metas.type = ?', 'category'))->num;
     }
-    
+
     /**
     * 获取标签数目
     *

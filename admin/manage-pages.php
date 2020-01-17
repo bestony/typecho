@@ -33,7 +33,7 @@ $stat = Typecho_Widget::widget('Widget_Stat');
                         </div>
                     </form>
                 </div><!-- end .typecho-list-operate -->
-            
+
                 <form method="post" name="manage_pages" class="operate-form">
                 <div class="typecho-table-wrap">
                     <table class="typecho-list-table">
@@ -68,7 +68,7 @@ $stat = Typecho_Widget::widget('Widget_Stat');
                                 if ($pages->hasSaved || 'page_draft' == $pages->type) {
                                     echo '<em class="status">' . _t('草稿') . '</em>';
                                 }
-                                
+
                                 if ('hidden' == $pages->status) {
                                     echo '<em class="status">' . _t('隐藏') . '</em>';
                                 }

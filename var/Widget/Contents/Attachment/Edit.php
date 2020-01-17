@@ -3,7 +3,7 @@ if (!defined('__TYPECHO_ROOT_DIR__')) {
     exit;
 }
 /**
- * 编辑文章
+ * 编辑文�
  *
  * @category typecho
  * @package Widget
@@ -224,7 +224,7 @@ class Widget_Contents_Attachment_Edit extends Widget_Contents_Post_Edit implemen
     }
 
     /**
-     * 删除文章
+     * 删除文�
      *
      * @access public
      * @return void
@@ -293,7 +293,7 @@ class Widget_Contents_Attachment_Edit extends Widget_Contents_Post_Edit implemen
                 ->where('type = ? AND parent = ?', 'attachment', 0)
                 ->page($page, 100)), 'cid');
             $page ++;
-            
+
             foreach ($posts as $post) {
                 // 删除插件接口
                 $this->pluginHandle()->delete($post, $this);

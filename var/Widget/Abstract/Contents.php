@@ -169,7 +169,7 @@ class Widget_Abstract_Contents extends Widget_Abstract
     {
         return $this->type . '-' . $this->cid;
     }
-    
+
     /**
      * 回复框id
      *
@@ -180,7 +180,7 @@ class Widget_Abstract_Contents extends Widget_Abstract
     {
         return 'respond-' . $this->theId;
     }
-    
+
     /**
      * 评论地址
      *
@@ -197,7 +197,7 @@ class Widget_Abstract_Contents extends Widget_Abstract
             $this->options->index
         );
     }
-    
+
     /**
      * trackback地址
      *
@@ -212,7 +212,7 @@ class Widget_Abstract_Contents extends Widget_Abstract
             $this->options->index
         );
     }
-    
+
     /**
      * 回复地址
      *
@@ -501,7 +501,7 @@ class Widget_Abstract_Contents extends Widget_Abstract
             if (isset($exists[$name])) {
                 unset($exists[$name]);
             }
- 
+
             $this->setField($name, $type, $value, $cid);
         }
 
@@ -626,7 +626,7 @@ class Widget_Abstract_Contents extends Widget_Abstract
             ->from('table.contents')
             ->cleanAttribute('group'))->num;
     }
-    
+
     /**
      * 获取当前所有自定义模板
      *
@@ -754,7 +754,7 @@ class Widget_Abstract_Contents extends Widget_Abstract
         $value['slug'] = $tmpSlug;
         $value['category'] = $tmpCategory;
         $value['directory'] = $tmpDirectory;
-        
+
         /** 处理密码保护流程 */
         if (strlen($value['password']) > 0 &&
         $value['password'] !== Typecho_Cookie::get('protectPassword_' . $value['cid']) &&

@@ -30,7 +30,7 @@ class Widget_Contents_Page_Edit extends Widget_Contents_Post_Edit implements Wid
      * @access protected
      */
     protected $themeCustomFieldsHook = 'themePageFields';
-    
+
     /**
      * 执行函数
      *
@@ -63,7 +63,7 @@ class Widget_Contents_Page_Edit extends Widget_Contents_Post_Edit implements Wid
     }
 
     /**
-     * 发布文章
+     * 发布文�
      *
      * @access public
      * @return void
@@ -264,7 +264,7 @@ class Widget_Contents_Page_Edit extends Widget_Contents_Post_Edit implements Wid
         /** 返回原网页 */
         $this->response->goBack();
     }
-    
+
     /**
      * 删除页面所属草稿
      *
@@ -299,7 +299,7 @@ class Widget_Contents_Page_Edit extends Widget_Contents_Post_Edit implements Wid
             $deleteCount > 0 ? _t('草稿已经被删除') : _t('没有草稿被删除'),
             $deleteCount > 0 ? 'success' : 'notice'
         );
-        
+
         /** 返回原网页 */
         $this->response->goBack();
     }

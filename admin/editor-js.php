@@ -17,7 +17,7 @@ $(document).ready(function () {
     options.strings = {
         bold: '<?php _e('加粗'); ?> <strong> Ctrl+B',
         boldexample: '<?php _e('加粗文字'); ?>',
-            
+
         italic: '<?php _e('斜体'); ?> <em> Ctrl+I',
         italicexample: '<?php _e('斜体文字'); ?>',
 
@@ -71,7 +71,7 @@ $(document).ready(function () {
     // 修正白名单
     converter.hook('makeHtml', function (html) {
         html = html.replace('<p><!--more--></p>', '<!--more-->');
-        
+
         if (html.indexOf('<!--more-->') > 0) {
             var parts = html.split(/\s*<\!\-\-more\-\->\s*/),
                 summary = parts.shift(),
@@ -131,7 +131,7 @@ $(document).ready(function () {
         ph = preview.height();
         $(document.body).addClass('fullscreen');
         var h = $(window).height() - toolbar.outerHeight();
-        
+
         textarea.css('height', h);
         preview.css('height', h);
         isFullScreen = true;
@@ -139,7 +139,7 @@ $(document).ready(function () {
 
     editor.hooks.chain('enterFullScreen', function () {
         $(document.body).addClass('fullscreen');
-        
+
         var h = window.screen.height - toolbar.outerHeight();
         textarea.css('height', h);
         preview.css('height', h);
@@ -190,7 +190,7 @@ $(document).ready(function () {
             $(".wmd-edittab a").removeClass('active');
             $(this).addClass("active");
             $("#wmd-editarea, #wmd-preview").addClass("wmd-hidetab");
-        
+
             var selected_tab = $(this).attr("href"),
                 selected_el = $(selected_tab).removeClass("wmd-hidetab");
 
@@ -223,7 +223,7 @@ $(document).ready(function () {
         initMarkdown();
     } else {
         var notice = $('<div class="message notice"><?php _e('这篇文章不是由Markdown语法创建的, 继续使用Markdown编辑它吗?'); ?> '
-            + '<button class="btn btn-xs primary yes"><?php _e('是'); ?></button> ' 
+            + '<button class="btn btn-xs primary yes"><?php _e('是'); ?></button> '
             + '<button class="btn btn-xs no"><?php _e('否'); ?></button></div>')
             .hide().insertBefore(textarea).slideDown();
 
@@ -240,4 +240,3 @@ $(document).ready(function () {
 });
 </script>
 <?php endif; ?>
-

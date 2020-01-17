@@ -163,7 +163,7 @@ class Typecho_Common
 
         return '<' . $tag . implode('', $parsedAttrs) . '>';
     }
-    
+
     /**
      * 解析属性
      *
@@ -180,11 +180,11 @@ class Typecho_Common
         $quote = '';
         $key = '';
         $value = '';
-        
+
         for ($i = 0; $i < $len; $i ++) {
             if ('=' != $attrs[$i] && !ctype_space($attrs[$i]) && -1 == $pos) {
                 $key .= $attrs[$i];
-                
+
                 /** 最后一个 */
                 if ($i == $len - 1) {
                     if ('' != ($key = trim($key))) {
@@ -213,14 +213,14 @@ class Typecho_Common
                 if ('' != ($key = trim($key))) {
                     $result[$key] = '';
                 }
-                
+
                 $key = '';
                 $value = '';
                 $pos = -1;
                 $key .= $attrs[$i];
             }
         }
-        
+
         return $result;
     }
 
@@ -777,7 +777,7 @@ EOF;
                 $str = substr($str, $start, $tLength);
             }
         }
-        
+
         return $length < $iLength ? ($str . $trim) : $str;
     }
 
@@ -851,7 +851,7 @@ EOF;
         if (!strlen($str)) {
             return $default;
         }
-        
+
         if (__TYPECHO_MB_SUPPORTED__) {
             mb_regex_encoding(self::$charset);
             mb_ereg_search_init($str, "[\w" . preg_quote('_-') . "]+");
@@ -1073,7 +1073,7 @@ EOF;
         $cutVar = Json::encode($cut);
         return "(function () {
     var {$name} = {$var}, {$cutName} = {$cutVar};
-    
+
     for (var i = 0; i < {$cutName}.length; i ++) {
         {$name} = {$name}.substring(0, {$cutName}[i][0]) + {$name}.substring({$cutName}[i][1]);
     }

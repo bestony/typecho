@@ -60,7 +60,7 @@ $isAllPosts = ('on' == $request->get('__typecho_all_posts') || 'on' == Typecho_C
                                     <li><a href="<?php $security->index('/action/contents-post-edit?do=mark&status=private'); ?>"><?php _e('标记为<strong>%s</strong>', _t('私密')); ?></a></li>
                                     <?php endif; ?>
                                 </ul>
-                            </div>  
+                            </div>
                         </div>
                         <div class="search" role="search">
                             <?php if ('' != $request->keywords || '' != $request->category): ?>
@@ -87,7 +87,7 @@ $isAllPosts = ('on' == $request->get('__typecho_all_posts') || 'on' == Typecho_C
                         </div>
                     </form>
                 </div><!-- end .typecho-list-operate -->
-            
+
                 <form method="post" name="manage_posts" class="operate-form">
                 <div class="typecho-table-wrap">
                     <table class="typecho-list-table">
@@ -121,7 +121,7 @@ $isAllPosts = ('on' == $request->get('__typecho_all_posts') || 'on' == Typecho_C
                                 if ($posts->hasSaved || 'post_draft' == $posts->type) {
                                     echo '<em class="status">' . _t('草稿') . '</em>';
                                 }
-                                
+
                                 if ('hidden' == $posts->status) {
                                     echo '<em class="status">' . _t('隐藏') . '</em>';
                                 } elseif ('waiting' == $posts->status) {
@@ -184,7 +184,7 @@ $isAllPosts = ('on' == $request->get('__typecho_all_posts') || 'on' == Typecho_C
                                     <li><a href="<?php $security->index('/action/contents-post-edit?do=mark&status=private'); ?>"><?php _e('标记为<strong>%s</strong>', _t('私密')); ?></a></li>
                                     <?php endif; ?>
                                 </ul>
-                            </div>  
+                            </div>
                         </div>
 
                         <?php if ($posts->have()): ?>

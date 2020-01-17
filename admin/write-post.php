@@ -49,7 +49,7 @@ Typecho_Widget::widget('Widget_Contents_Post_Edit')->to($post);
                         <label for="text" class="sr-only"><?php _e('文章内容'); ?></label>
                         <textarea style="height: <?php $options->editorSize(); ?>px" autocomplete="off" id="text" name="text" class="w-100 mono"><?php echo htmlspecialchars($post->text); ?></textarea>
                     </p>
-                    
+
                     <?php include 'custom-fields.php'; ?>
 
                     <p class="submit clearfix">
@@ -142,7 +142,7 @@ Typecho_Widget::widget('Widget_Contents_Post_Edit')->to($post);
                                     <label for="allowFeed"><?php _e('允许在聚合中出现'); ?></label></li>
                                 </ul>
                             </section>
-                            
+
                             <section class="typecho-post-option">
                                 <label for="trackback" class="typecho-label"><?php _e('引用通告'); ?></label>
                                 <p><textarea id="trackback" class="w-100 mono" name="trackback" rows="2"></textarea></p>

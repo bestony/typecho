@@ -55,11 +55,11 @@ class Widget_Abstract_Comments extends Widget_Abstract
         if ($this->options->commentsPageBreak && 'approved' == $this->status) {
             $coid = $this->coid;
             $parent = $this->parent;
-            
+
             while ($parent > 0 && $this->options->commentsThreaded) {
                 $parentRows = $this->db->fetchRow($this->db->select('parent')->from('table.comments')
                 ->where('coid = ? AND status = ?', $parent, 'approved')->limit(1));
-                
+
                 if (!empty($parentRows)) {
                     $coid = $parent;
                     $parent = $parentRows['parent'];
@@ -76,22 +76,22 @@ class Widget_Abstract_Comments extends Widget_Abstract
             if ($this->options->commentsShowCommentOnly) {
                 $select->where('type = ?', 'comment');
             }
-            
+
             $comments = $this->db->fetchAll($select);
-            
+
             $commentsMap = array();
             $total = 0;
-            
+
             foreach ($comments as $comment) {
                 $commentsMap[$comment['coid']] = $comment['parent'];
-                
+
                 if (0 == $comment['parent'] || !isset($commentsMap[$comment['parent']])) {
                     $total ++;
                 }
             }
 
             $currentPage = ceil($total / $this->options->commentsPageSize);
-            
+
             $pageRow = array('permalink' => $this->parentContent['pathinfo'], 'commentPage' => $currentPage);
             return Typecho_Router::url(
                 'comment_page',
@@ -99,7 +99,7 @@ class Widget_Abstract_Comments extends Widget_Abstract
                 $this->options->index
             ) . '#' . $this->theId;
         }
-        
+
         return $this->parentContent['permalink'] . '#' . $this->theId;
     }
 
@@ -255,7 +255,7 @@ class Widget_Abstract_Comments extends Widget_Abstract
                 $updateStruct[$key] = $preUpdateStruct[$key];
             }
         }
-        
+
         /** 更新创建时间 */
         if (!empty($comment['created'])) {
             $updateStruct['created'] = $comment['created'];
@@ -413,7 +413,7 @@ class Widget_Abstract_Comments extends Widget_Abstract
     {
         if ($this->options->commentsAvatar && 'comment' == $this->type) {
             $rating = $this->options->commentsAvatarRating;
-            
+
             $this->pluginHandle(__CLASS__)->trigger($plugged)->gravatar($size, $rating, $default, $this);
             if (!$plugged) {
                 $url = Typecho_Common::gravatarUrl($this->mail, $size, $rating, $default, $this->request->isSecure());

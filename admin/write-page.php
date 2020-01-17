@@ -45,7 +45,7 @@ Typecho_Widget::widget('Widget_Contents_Page_Edit')->to($page);
                         <label for="text" class="sr-only"><?php _e('页面内容'); ?></label>
                         <textarea style="height: <?php $options->editorSize(); ?>px" autocomplete="off" id="text" name="text" class="w-100 mono"><?php echo htmlspecialchars($page->text); ?></textarea>
                     </p>
-                        
+
                     <?php include 'custom-fields.php'; ?>
                     <p class="submit clearfix">
                         <span class="left">
@@ -61,7 +61,7 @@ Typecho_Widget::widget('Widget_Contents_Page_Edit')->to($page);
                             <?php endif; ?>
                         </span>
                     </p>
-                    
+
                     <?php Typecho_Plugin::factory('admin/write-page.php')->content($page); ?>
                 </div>
                 <div id="edit-secondary" class="col-mb-12 col-tb-3" role="complementary">
@@ -120,7 +120,7 @@ Typecho_Widget::widget('Widget_Contents_Page_Edit')->to($page);
                                     <label for="allowFeed"><?php _e('允许在聚合中出现'); ?></label></li>
                                 </ul>
                             </section>
-                            
+
                             <?php Typecho_Plugin::factory('admin/write-page.php')->advanceOption($page); ?>
                         </div>
                         <?php if ($page->have()): ?>

@@ -103,7 +103,7 @@ class Typecho_Request
      */
     private static $_httpParams = false;
 
-    
+
     /**
      * 域名前缀
      *
@@ -396,7 +396,7 @@ class Typecho_Request
     {
         if (null === $this->_requestRoot) {
             $root = rtrim(self::getUrlPrefix() . $this->getBaseUrl(), '/') . '/';
-            
+
             $pos = strrpos($root, '.php/');
             if ($pos) {
                 $root = dirname(substr($root, 0, $pos));
@@ -447,7 +447,7 @@ class Typecho_Request
         } elseif (isset($_SERVER['REQUEST_URI'])) {
             $requestUri = $_SERVER['REQUEST_URI'];
             $parts       = @parse_url($requestUri);
-            
+
             if (isset($_SERVER['HTTP_HOST']) && strstr($requestUri, $_SERVER['HTTP_HOST'])) {
                 if (false !== $parts) {
                     $requestUri  = (empty($parts['path']) ? '' : $parts['path'])

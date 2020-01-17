@@ -26,7 +26,7 @@ class Widget_Archive extends Widget_Abstract_Contents
      * @var string
      */
     private $_themeFile;
-    
+
     /**
      * 风格目录
      *
@@ -178,7 +178,7 @@ class Widget_Archive extends Widget_Abstract_Contents
      * @var string
      */
     private $_archiveSingle = false;
-    
+
     /**
      * 是否为自定义首页, 主要为了标记自定义首页的情况
      *
@@ -235,7 +235,7 @@ class Widget_Archive extends Widget_Abstract_Contents
         if ($this->parameter->isFeed) {
             $this->_invokeByFeed = true;
         }
-        
+
         /** 初始化皮肤路径 */
         $this->_themeDir = rtrim($this->options->themeFile($this->options->theme), '/') . '/';
 
@@ -289,7 +289,7 @@ class Widget_Archive extends Widget_Abstract_Contents
             $this->parameter->pageSize = 10;
         }
     }
-    
+
     /**
      * 评论地址
      *
@@ -301,13 +301,13 @@ class Widget_Archive extends Widget_Abstract_Contents
         /** 生成反馈地址 */
         /** 评论 */
         $commentUrl = parent::___commentUrl();
-        
+
         //不依赖js的父级评论
         $reply = $this->request->filter('int')->replyTo;
         if ($reply && $this->is('single')) {
             $commentUrl .= '?parent=' . $reply;
         }
-        
+
         return $commentUrl;
     }
 
@@ -444,7 +444,7 @@ class Widget_Archive extends Widget_Abstract_Contents
     {
         $this->_themeFile = $themeFile;
     }
-    
+
     /**
      * @param $themeDir the $_themeDir to set
      */
@@ -595,7 +595,7 @@ class Widget_Archive extends Widget_Abstract_Contents
     {
         return $this->_themeFile;
     }
-    
+
     /**
      * @return string
      */
@@ -619,7 +619,7 @@ class Widget_Archive extends Widget_Abstract_Contents
             || !$this->parameter->checkPermalink) { // 强制关闭
             return;
         }
-        
+
         if ($this->_archiveSingle) {
             $permalink = $this->permalink;
         } else {
@@ -766,7 +766,7 @@ class Widget_Archive extends Widget_Abstract_Contents
         $this->_archiveType = 'single';
 
         /** 匹配类型 */
-        
+
         if ('single' != $this->parameter->type) {
             $select->where('table.contents.type = ?', $this->parameter->type);
         }
@@ -1456,7 +1456,7 @@ class Widget_Archive extends Widget_Abstract_Contents
             }
 
             $template = array_merge($default, $config);
-            
+
             $total = $this->getTotal();
             $this->pluginHandle()->trigger($hasNav)->pageNav(
                 $this->_currentPage,
@@ -1483,7 +1483,7 @@ class Widget_Archive extends Widget_Abstract_Contents
                     $this->parameter->pageSize,
                     $query
                 );
-                
+
                 echo '<' . $template['wrapTag'] . (empty($template['wrapClass'])
                     ? '' : ' class="' . $template['wrapClass'] . '"') . '>';
                 $nav->render($prev, $next, $splitPage, $splitWord, $template);
@@ -1757,7 +1757,7 @@ class Widget_Archive extends Widget_Abstract_Contents
         if (!empty($allows['atom']) && $allowFeed) {
             $header .= '<link rel="alternate" type="application/atom+xml" title="' . $title . ' &raquo; ATOM 1.0" href="' . $allows['atom'] . '" />' . "\n";
         }
-        
+
         if ($this->options->commentsThreaded && $this->is('single')) {
             if ('' != $allows['commentReply']) {
                 if (1 == $allows['commentReply']) {
@@ -1767,14 +1767,14 @@ class Widget_Archive extends Widget_Abstract_Contents
         dom : function (id) {
             return document.getElementById(id);
         },
-    
+
         create : function (tag, attr) {
             var el = document.createElement(tag);
-        
+
             for (var key in attr) {
                 el.setAttribute(key, attr[key]);
             }
-        
+
             return el;
         },
 
@@ -1874,7 +1874,7 @@ class Widget_Archive extends Widget_Abstract_Contents
                         added = true;
                     }
                 }
-            
+
                 for (var i = 0; i < event.triggers.length; i ++) {
                     var trigger = event.triggers[i];
                     document[event.add](trigger, append);
@@ -1923,7 +1923,7 @@ class Widget_Archive extends Widget_Abstract_Contents
         if (!in_array($cookieName, array('author', 'mail', 'url'))) {
             return '';
         }
-    
+
         $value = Typecho_Cookie::get('__typecho_remember_' . $cookieName);
         if ($return) {
             return $value;
@@ -2001,7 +2001,7 @@ class Widget_Archive extends Widget_Abstract_Contents
     {
         /** 处理静态链接跳转 */
         $this->checkPermalink();
-        
+
         /** 添加Pingback */
         if (2 == $this->options->allowXmlRpc) {
             $this->response->setHeader('X-Pingback', $this->options->xmlRpcUrl);
@@ -2014,7 +2014,7 @@ class Widget_Archive extends Widget_Abstract_Contents
                 $validated = true;
             }
         }
-        
+
         if (!$validated && !empty($this->_archiveType)) {
 
             //~ 首先找具体路径, 比如 category/default.php

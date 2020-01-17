@@ -3,7 +3,7 @@ if (!defined('__TYPECHO_ROOT_DIR__')) {
     exit;
 }
 /**
- * 编辑文章
+ * 编辑文�
  *
  * @category typecho
  * @package Widget
@@ -152,7 +152,7 @@ class Widget_Contents_Post_Edit extends Widget_Abstract_Contents implements Widg
 
             $created = mktime($hour, $min, $second, $month, $day, $year) - $this->options->timezone + $this->options->serverTimezone;
         } elseif ($this->have() && $this->created > 0) {
-            //如果是修改文章
+            //如果是修改文�
             $created = $this->created;
         } elseif ($this->request->is('do=save')) {
             // 如果是草稿而且没有任何输入则保持原状
@@ -259,7 +259,7 @@ class Widget_Contents_Post_Edit extends Widget_Abstract_Contents implements Widg
 
         /** 真实的内容id */
         $realId = 0;
-        
+
         /** 是否是从草稿状态发布 */
         $isDraftToPublish = ('post_draft' == $this->type);
 
@@ -302,7 +302,7 @@ class Widget_Contents_Post_Edit extends Widget_Abstract_Contents implements Widg
 
             /** 保存自定义字段 */
             $this->applyFields($this->getFields(), $realId);
-        
+
             $this->db->fetchRow($this->select()->where('table.contents.cid = ?', $realId)->limit(1), array($this, 'push'));
         }
     }
@@ -339,7 +339,7 @@ class Widget_Contents_Post_Edit extends Widget_Abstract_Contents implements Widg
 
         /** 如果草稿已经存在 */
         if ($this->draft) {
-        
+
             /** 直接将草稿状态更改 */
             if ($this->update($contents, $this->db->sql()->where('cid = ?', $this->draft['cid']))) {
                 $realId = $this->draft['cid'];
@@ -373,7 +373,7 @@ class Widget_Contents_Post_Edit extends Widget_Abstract_Contents implements Widg
 
             /** 同步附件 */
             $this->attach($this->cid);
-            
+
             /** 保存自定义字段 */
             $this->applyFields($this->getFields(), $realId);
         }
@@ -519,7 +519,7 @@ class Widget_Contents_Post_Edit extends Widget_Abstract_Contents implements Widg
 
         if (file_exists($configFile)) {
             require_once $configFile;
-            
+
             if (function_exists('themeFields')) {
                 themeFields($layout);
             }
@@ -557,7 +557,7 @@ class Widget_Contents_Post_Edit extends Widget_Abstract_Contents implements Widg
                 foreach ($elements as $el) {
                     $div->addItem($el);
                 }
-                
+
                 $defaultFields[$name] = array($item->label, $div);
             }
         }
@@ -574,7 +574,7 @@ class Widget_Contents_Post_Edit extends Widget_Abstract_Contents implements Widg
     public function getFieldItems()
     {
         $fields = array();
-        
+
         if ($this->have()) {
             $defaultFields = $this->getDefaultFieldItems();
             $rows = $this->db->fetchAll($this->db->select()->from('table.fields')
@@ -731,7 +731,7 @@ class Widget_Contents_Post_Edit extends Widget_Abstract_Contents implements Widg
     }
 
     /**
-     * 发布文章
+     * 发布文�
      *
      * @access public
      * @return void
@@ -814,7 +814,7 @@ class Widget_Contents_Post_Edit extends Widget_Abstract_Contents implements Widg
     }
 
     /**
-     * 标记文章
+     * 标记文�
      *
      * @access public
      * @return void
@@ -905,7 +905,7 @@ class Widget_Contents_Post_Edit extends Widget_Abstract_Contents implements Widg
     }
 
     /**
-     * 删除文章
+     * 删除文�
      *
      * @access public
      * @return void
@@ -983,7 +983,7 @@ class Widget_Contents_Post_Edit extends Widget_Abstract_Contents implements Widg
         /** 返回原网页 */
         $this->response->goBack();
     }
-    
+
     /**
      * 删除文章所属草稿
      *
@@ -1018,7 +1018,7 @@ class Widget_Contents_Post_Edit extends Widget_Abstract_Contents implements Widg
             $deleteCount > 0 ? _t('草稿已经被删除') : _t('没有草稿被删除'),
             $deleteCount > 0 ? 'success' : 'notice'
         );
-        
+
         /** 返回原网页 */
         $this->response->goBack();
     }
